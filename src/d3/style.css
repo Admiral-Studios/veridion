@@ -1,0 +1,15 @@
+.contSelect {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.select_item_classname {
+  margin-right: 16px;
+}
+
+.css-hi54jv-MuiGrid-root {
+  width: 100%;
+  width: calc(100% + 1.5rem);
+}

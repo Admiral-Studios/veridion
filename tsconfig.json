@@ -1,0 +1,50 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src",
+    "target": "es6",
+    "typeRoots": [
+      "./typings",
+      "./node_modules/@types"
+    ],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "paths": {
+      "apexcharts": [
+        "./node_modules/apexcharts-clevision"
+      ],
+      "apexcharts/*": [
+        "./node_modules/apexcharts-clevision/*"
+      ],
+      "jsoneditor-react": [
+        "./typings/jsoneditor.d.ts"
+      ],
+      "react-json-editor-ajrm/locale/en": [
+        "./typings/react-json-editor-ajrm.d.ts"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "declaration.d.ts",
+    "typings/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

@@ -1,0 +1,514 @@
+[
+  {
+    "attribute": "company_id",
+    "description": "Company internal ID to Veridion"
+  },
+  {
+    "attribute": "created_at",
+    "description": "UTC Date and time when the company profile was initially added to the Veridion database"
+  },
+  {
+    "attribute": "last_updated_at",
+    "description": "UTC Date and time when the information about the company was last extracted and verified for any updates."
+  },
+  {
+    "attribute": "company_commercial_names",
+    "description": "The commercial name by which the company is known. This may or may not be the same as the legal name. For example, a company may be called \"The Acme Inc.\", yet it's referred to by its commercial name, \"Acme\"."
+  },
+  {
+    "attribute": "company_name",
+    "description": "Most commonly used name when referring to this entity. This name can be the legal name, or it can be the commercial name. In some cases, the commercial name is an abbreviation of the company name."
+  },
+  {
+    "attribute": "company_legal_names",
+    "description": "The company's legal entity name. This is the name that is used, for example, in the Privacy Policy and other legal documents."
+  },
+  {
+    "attribute": "company_type",
+    "description": "Public\" for companies listed on the stock exchange, \"Non-profit\" for non-profits, \"Private\" for privately held companies"
+  },
+  {
+    "attribute": "extracted_long_description",
+    "description": "A longer description of the company the business activities of the company."
+  },
+  {
+    "attribute": "extracted_short_description",
+    "description": "A short description of the business activities of the company"
+  },
+  {
+    "attribute": "main_city",
+    "description": "The city in which the company's HQ is located"
+  },
+  {
+    "attribute": "main_country",
+    "description": "The country in which the company's HQ is located"
+  },
+  {
+    "attribute": "main_country_code",
+    "description": "2-letter ISO code of the country in which the company's HQ is located"
+  },
+  {
+    "attribute": "main_latitude",
+    "description": "The latitude coordinates associated with the company's HQ"
+  },
+  {
+    "attribute": "main_longitude",
+    "description": "The longitude coordinates associated with the company's HQ"
+  },
+  {
+    "attribute": "main_postcode",
+    "description": "The street in which the company's HQ is located"
+  },
+  {
+    "attribute": "main_region",
+    "description": "The region in which the company's HQ is located"
+  },
+  {
+    "attribute": "main_street",
+    "description": "The street in which the company's HQ is located"
+  },
+  {
+    "attribute": "main_street_number",
+    "description": "The city in which the company's HQ is located"
+  },
+  {
+    "attribute": "main_business_category",
+    "description": "Primary Industry of activity for the company"
+  },
+  {
+    "attribute": "main_industry",
+    "description": "Primary Industry of activity for the company"
+  },
+  {
+    "attribute": "main_sector",
+    "description": "The main sector of activity of the business based on Veridion's ML classification model"
+  },
+  {
+    "attribute": "website_domain",
+    "description": "The domain name of the main company website"
+  },
+  {
+    "attribute": "website_language_code",
+    "description": "Main language identified on the company website"
+  },
+  {
+    "attribute": "website_tld",
+    "description": "Top-level-domain of the company domain"
+  },
+  {
+    "attribute": "website_url",
+    "description": "URL of the main company website"
+  },
+  {
+    "attribute": "number_of_locations",
+    "description": "Number of physical locations (holding an address) identified for the company. Includes offices, retail locations, manufacturing plants and other types of locations. \n  \n  This number may or may not be the same as Number of Offices, depending on the company"
+  },
+  {
+    "attribute": "all_locations",
+    "description": "Country, Region and City of all the known company locations. (Provide up to 10 locations)"
+  },
+  {
+    "attribute": "year_founded",
+    "description": "The year when the company was founded. If the company is part of a larger or older organization, the founding year is considered the one of the parent organization."
+  },
+  {
+    "attribute": "business_tags",
+    "description": "Tag 1, Tag 2, Tag 3 are company attributes, related to the company's activities. For example, a tech company may contain tags such as \"\"startup\"\", \"\"SaaS\"\", \"\"Artificial Intelligence\"\". A company may have up to 3 associated tags, depending on their online presence."
+  },
+  {
+    "attribute": "primary_phone",
+    "description": "Primary phone number associated with the company. This will usually be front office phone numbers or department level phone numbers, listed in public places such as the company's website."
+  },
+  {
+    "attribute": "phone_numbers",
+    "description": "Other phone numbers associated with the company. These will usually be front office phone numbers or department level phone numbers"
+  },
+  {
+    "attribute": "primary_email",
+    "description": "Company generic emails such as info@, contact@, linked to the company domain."
+  },
+  {
+    "attribute": "emails",
+    "description": "The main generic email (such as info@, contact@) linked to the company's domain."
+  },
+  {
+    "attribute": "employee_count",
+    "description": "Number of people employed by the company"
+  },
+  {
+    "attribute": "estimated_revenue",
+    "description": "Company yearly revenue. For companies that publish their revenue numbers (e.g. public companies, Inc 5000 companies etc.), the value is official, and for companies that don't, the value is estimated."
+  },
+  {
+    "attribute": "generated_company_description",
+    "description": "Proprietary Large Language Model that generates descriptions of the company"
+  },
+  {
+    "attribute": "generated_business_tags",
+    "description": "Proprietary Large Language Model generates company's activities of the company based on its business model."
+  },
+  {
+    "attribute": "naics_2022_primary_code",
+    "description": "Classification of the company's main business activity, in the North American Industry Classification System (NAICS) taxonomy, with a 6-digit granularity."
+  },
+  {
+    "attribute": "naics_2022_primary_label",
+    "description": "Classification of the company's main business activity, in the North American Industry Classification System (NAICS) taxonomy, with a 6-digit granularity."
+  },
+  {
+    "attribute": "naics_2022_secondary_codes",
+    "description": "Classification of the company's secondary business activities, in the North American Industry Classification System (NAICS) taxonomy, with a 6-digit granularity."
+  },
+  {
+    "attribute": "naics_2022_secondary_labels",
+    "description": "Classification of the company's secondary business activities, in the North American Industry Classification System (NAICS) taxonomy, with a 6-digit granularity."
+  },
+  {
+    "attribute": "primary_naics_snippets",
+    "description": "Provides evidence to support the machine learning models decision to predict the primary NAICS Code"
+  },
+  {
+    "attribute": "secondary_naics_snippets",
+    "description": "Provides evidence to support the machine learning models decision to predict the secondary NAICS Code"
+  },
+  {
+    "attribute": "sic_code",
+    "description": "Classification of the company's main business activity, in the Standard Industrial Classification (SIC) taxonomy."
+  },
+  {
+    "attribute": "sic_label",
+    "description": "Classification of the company's main business activity, in the Standard Industrial Classification (SIC) taxonomy."
+  },
+  {
+    "attribute": "isic_4_code",
+    "description": "Classification of the company's secondary business activities, in the International Standard Industrial Classification (ISIC) taxonomy."
+  },
+  {
+    "attribute": "isic_4_label",
+    "description": "Classification of the company's secondary business activities, in the International Standard Industrial Classification (ISIC) taxonomy."
+  },
+  {
+    "attribute": "nace_rev2_code",
+    "description": "Classification of the company's secondary business activities, in the Nomenclature of Economic Activities (NACE) taxonomy, used throughout the European Union."
+  },
+  {
+    "attribute": "nace_rev2_label",
+    "description": "Classification of the company's secondary business activities, in the Nomenclature of Economic Activities (NACE) taxonomy, used throughout the European Union."
+  },
+  {
+    "attribute": "ncci_code",
+    "description": "NCCI Code, short for National Council on Compensation Insurance Code, is a standardized classification system used in the United States to categorize and classify various types of businesses and industries for workers' compensation insurance purposes."
+  },
+  {
+    "attribute": "ibc_insurance_labels",
+    "description": "Classification of the company's main business activity, in the IBC, insurance business classification taxonomy."
+  },
+  {
+    "attribute": "ibc_insurance_codes",
+    "description": "Classification of the company's main business activity, in the IBC, insurance business classification taxonomy."
+  },
+  {
+    "attribute": "facebook_url",
+    "description": "The company's Facebook URL"
+  },
+  {
+    "attribute": "twitter_url",
+    "description": "The company's Twitter URL"
+  },
+  {
+    "attribute": "instagram_url",
+    "description": "The company's Instagram URL"
+  },
+  {
+    "attribute": "linkedin_url",
+    "description": "The company's LinkedIn URL"
+  },
+  {
+    "attribute": "ios_app_url",
+    "description": "iOS App Store URL"
+  },
+  {
+    "attribute": "android_app_url",
+    "description": "Google Play Store URL"
+  },
+  {
+    "attribute": "youtube_url",
+    "description": "Company's Youtube channel."
+  },
+  {
+    "attribute": "tiktok_url",
+    "description": "Company's Tiktok page."
+  },
+  {
+    "attribute": "technologies",
+    "description": "Types of web technologies that are used by the company website and public assets such as: Content Management System, Programming Language, Other web components"
+  },
+  {
+    "attribute": "registred_name",
+    "description": "Company legal name as provided by the local registry that the company incorporated with"
+  },
+  {
+    "attribute": "registered_country_code",
+    "description": "Legal address of registration, as provided by the registry with which this company incorporated. The legal address might differ from the operational (office) address of the company."
+  },
+  {
+    "attribute": "registered_country",
+    "description": "Legal address of registration, as provided by the registry with which this company incorporated. The legal address might differ from the operational (office) address of the company."
+  },
+  {
+    "attribute": "registered_region",
+    "description": "Legal address of registration, as provided by the registry with which this company incorporated. The legal address might differ from the operational (office) address of the company."
+  },
+  {
+    "attribute": "registered_city",
+    "description": "Legal address of registration, as provided by the registry with which this company incorporated. The legal address might differ from the operational (office) address of the company."
+  },
+  {
+    "attribute": "registered_postcode",
+    "description": "Legal address of registration, as provided by the registry with which this company incorporated. The legal address might differ from the operational (office) address of the company."
+  },
+  {
+    "attribute": "registered_street",
+    "description": "Legal address of registration, as provided by the registry with which this company incorporated. The legal address might differ from the operational (office) address of the company."
+  },
+  {
+    "attribute": "registered_street_number",
+    "description": "Legal address of registration, as provided by the registry with which this company incorporated. The legal address might differ from the operational (office) address of the company."
+  },
+  {
+    "attribute": "registered_latitude",
+    "description": "Legal address of registration, as provided by the registry with which this company incorporated. The legal address might differ from the operational (office) address of the company."
+  },
+  {
+    "attribute": "registered_longitude",
+    "description": "Legal address of registration, as provided by the registry with which this company incorporated. The legal address might differ from the operational (office) address of the company."
+  },
+  {
+    "attribute": "registered_primary_phone",
+    "description": "Phone number provided to the registry when incorporating."
+  },
+  {
+    "attribute": "jurisdiction",
+    "description": "The jurisdiction where this company incorporated. In most territories it's the country, but in others it's the region (e.g. in Switzerland) or the state (e.g. in the United States)."
+  },
+  {
+    "attribute": "legal_form",
+    "description": "The legal form of the company (e.g. \"Limited Liability Company\")"
+  },
+  {
+    "attribute": "company_status",
+    "description": "The company's status as provided by the registry (Active / Inactive)"
+  },
+  {
+    "attribute": "year_incorporated",
+    "description": "The year in which the legal entity was first incorporated."
+  },
+  {
+    "attribute": "date_incorporated",
+    "description": "The exact date of incorporation for the legal entity."
+  },
+  {
+    "attribute": "lei",
+    "description": "The ID of the company, if the company registered for a Legal Entity Identifier (LEI)"
+  },
+  {
+    "attribute": "ein",
+    "description": "US Employer Identification Number, if the company registered for an EIN."
+  },
+  {
+    "attribute": "vat_id",
+    "description": "Value Added Tax ID, in countries and territories that require a VAT ID (especially countries in Europe)."
+  },
+  {
+    "attribute": "registry_id",
+    "description": "Local Unique ID as provided by the local registry where this legal entity is incorporated."
+  },
+  {
+    "attribute": "root_domain",
+    "description": "The primary domain name of the website, such as \"3m.com."
+  },
+  {
+    "attribute": "Company_id",
+    "description": "A unique identifier assigned to the company for tracking and differentiation purposes."
+  },
+  {
+    "attribute": "page_breadcrumbs",
+    "description": "Navigational aid showing the hierarchical path of pages leading to the current page on the website."
+  },
+  {
+    "attribute": "h1",
+    "description": "The main heading or title of a webpage, prominently indicating its content."
+  },
+  {
+    "attribute": "meta_title",
+    "description": "A concise and descriptive title for a webpage, visible in search engine results and browser tabs."
+  },
+  {
+    "attribute": "url",
+    "description": "The specific web address redirecting to the page's location on the website."
+  },
+  {
+    "attribute": "name",
+    "description": "The name of the product, in this case, \"Cutter Stand."
+  },
+  {
+    "attribute": "product_description",
+    "description": "A focused and detailed description of the product's attributes, benefits, and how it meets specific needs."
+  },
+  {
+    "attribute": "unspsc_class_name",
+    "description": "The name of a category in the United Nations Standard Products and Services Code (UNSPSC) classification system, organizing products and services for procurement and supply chain purposes."
+  },
+  {
+    "attribute": "unspsc_class",
+    "description": "The numeric code corresponding to a specific class category in the UNSPSC classification system."
+  },
+  {
+    "attribute": "unspsc_family_name",
+    "description": "The name of a broader family category within the UNSPSC classification system."
+  },
+  {
+    "attribute": "unspsc_family",
+    "description": "The numeric code associated with a specific family category in the UNSPSC classification system."
+  },
+  {
+    "attribute": "unspsc_segment_name",
+    "description": "The name of an even broader segment category within the UNSPSC classification system."
+  },
+  {
+    "attribute": "unspsc_segment",
+    "description": "The numeric code associated with a specific segment category in the UNSPSC classification system."
+  },
+  {
+    "attribute": "veridion_id",
+    "description": "Company internal ID to Veridion"
+  },
+  {
+    "attribute": "company_name",
+    "description": "The name of the company"
+  },
+  {
+    "attribute": "country_code",
+    "description": "2-letter ISO code of the country"
+  },
+  {
+    "attribute": "country",
+    "description": "The country name associated with the location"
+  },
+  {
+    "attribute": "region_code",
+    "description": "The region code associated with the location"
+  },
+  {
+    "attribute": "region",
+    "description": "The region name associated with the location"
+  },
+  {
+    "attribute": "city",
+    "description": "The city associated with the location"
+  },
+  {
+    "attribute": "street",
+    "description": "The street name associated with the location"
+  },
+  {
+    "attribute": "street_number",
+    "description": "The street number associated with the location"
+  },
+  {
+    "attribute": "postcode",
+    "description": "The postal code associated with the location"
+  },
+  {
+    "attribute": "latittude",
+    "description": "The latitude coordinates associated with the location"
+  },
+  {
+    "attribute": "longitude",
+    "description": "The longitude coordinates associated with the location"
+  },
+  {
+    "attribute": "veridion_id",
+    "description": "Company internal ID to Veridion"
+  },
+  {
+    "attribute": "company_name",
+    "description": "Most commonly used name when referring to this entity. This name can be the legal name, or it can be the commercial name. In some cases, the commercial name is an abbreviation of the company name."
+  },
+  {
+    "attribute": "esg_content_type",
+    "description": "Content type refers to the format or medium of the content being analyzed for sustainability topics. It categorizes content into different forms, such as news or commitments"
+  },
+  {
+    "attribute": "esg_content_headline",
+    "description": "ESG content headline is the title or heading of the ESG-related content piece. It serves as a brief summary of the primary topic or focus of the content"
+  },
+  {
+    "attribute": "esg_content_relevant_text",
+    "description": "ESG content relevant text comprises the main body of the content, including all pertinent information, data, analysis, and insights related to environmental, social, and governance aspects."
+  },
+  {
+    "attribute": "esg_content_source_url",
+    "description": "The ESG content source URL is the web link or URL that directs readers to the original source of the ESG content."
+  },
+  {
+    "attribute": "esg_content_pillar",
+    "description": "ESG content pillar refers to one of the core areas within the broader ESG framework. These pillars typically include Environmental, Social, and Governance considerations."
+  },
+  {
+    "attribute": "esg_content_theme",
+    "description": "ESG content theme represents the overarching idea or message that ties the ESG content together."
+  },
+  {
+    "attribute": "esg_content_risk_criteria",
+    "description": "ESG content risk criteria are the specific factors or elements that are evaluated to assess the potential risks associated with the ESG content."
+  },
+  {
+    "attribute": "veridion_id",
+    "description": "Company internal ID to Veridion"
+  },
+  {
+    "attribute": "company_name",
+    "description": "Most commonly used name when referring to this entity. This name can be the legal name, or it can be the commercial name. In some cases, the commercial name is an abbreviation of the company name."
+  },
+  {
+    "attribute": "esg_content_type",
+    "description": "Content type refers to the format or medium of the content being analyzed for sustainability topics. It categorizes content into different forms, such as news or commitments"
+  },
+  {
+    "attribute": "esg_content_headline",
+    "description": "ESG content headline is the title or heading of the ESG-related content piece. It serves as a brief summary of the primary topic or focus of the content"
+  },
+  {
+    "attribute": "esg_content_relevant_text",
+    "description": "ESG content relevant text comprises the main body of the content, including all pertinent information, data, analysis, and insights related to environmental, social, and governance aspects."
+  },
+  {
+    "attribute": "esg_content_source_url",
+    "description": "The ESG content source URL is the web link or URL that directs readers to the original source of the ESG content."
+  },
+  {
+    "attribute": "esg_content_pillar",
+    "description": "ESG content pillar refers to one of the core areas within the broader ESG framework. These pillars typically include Environmental, Social, and Governance considerations."
+  },
+  {
+    "attribute": "esg_content_theme",
+    "description": "ESG content theme represents the overarching idea or message that ties the ESG content together."
+  },
+  {
+    "attribute": "esg_content_risk_criteria",
+    "description": "ESG content risk criteria are the specific factors or elements that are evaluated to assess the potential risks associated with the ESG content."
+  },
+  {
+    "attribute": "esg_content_sentiment_value",
+    "description": "ESG content sentiment value is a measure of the emotional tone or sentiment conveyed by the ESG content. It can range from positive to negative, or neutral."
+  },
+  {
+    "attribute": "esg_content_sentiment_confidence",
+    "description": "ESG content confidence value indicates the level of certainty or confidence in the accuracy and reliability of the Sentiment value."
+  },
+  {
+    "attribute": "esg_content_publish_date",
+    "description": "ESG content publish date is the date when the ESG-related content was initially made available to the public or stakeholders."
+  }
+]

@@ -1,0 +1,8 @@
+.power-bi-iframe {
+  height: calc(100vh - 90px);
+  width: 100%;
+}
+
+.power-bi-iframe > iframe {
+  border: 0;
+}
