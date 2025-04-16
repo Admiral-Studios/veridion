@@ -1,6 +1,6 @@
 import { CompanySearchProductType } from 'src/types/apps/veridionTypes'
 
-const reduceValues = (array: [string, number][]) =>
+const reduceChartValues = (array: [string, number][]) =>
   array.reduce(
     (acc, cur, index) => {
       if (index < 20) {
@@ -18,6 +18,17 @@ const reduceValues = (array: [string, number][]) =>
     },
     { keys: [] as string[], values: [] as number[] }
   )
+
+const reduceDatagridValues = (array: [string, number][]) =>
+  array.reduce((acc, cur) => {
+    return [
+      ...acc,
+      {
+        title: cur[0],
+        values: cur[1]
+      }
+    ]
+  }, [] as { title: string; values: number }[])
 
 const countChartsInfo = (data: CompanySearchProductType[]) => {
   const businessTags: { [key: string]: number } = {}
@@ -110,13 +121,13 @@ const countChartsInfo = (data: CompanySearchProductType[]) => {
   const companiesByCitiesEntries = Object.entries(companiesByCities).sort((a, b) => b[1] - a[1])
 
   return {
-    businessTags: reduceValues(businessTagsEntries),
-    employeesCount: reduceValues(employeesCountEntries),
-    revenuesValues: reduceValues(revenuesValuesEntries),
-    companiesByCities: reduceValues(companiesByCitiesEntries)
+    businessTags: reduceDatagridValues(businessTagsEntries),
+    employeesCount: reduceChartValues(employeesCountEntries),
+    revenuesValues: reduceChartValues(revenuesValuesEntries),
+    companiesByCities: reduceDatagridValues(companiesByCitiesEntries)
   }
 }
 
-export const makeChartsData = (companies: CompanySearchProductType[]) => {
+export const makeChartsDatagridData = (companies: CompanySearchProductType[]) => {
   return countChartsInfo(companies)
 }

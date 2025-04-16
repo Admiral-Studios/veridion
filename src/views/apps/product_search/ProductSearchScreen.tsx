@@ -715,7 +715,7 @@ const SearchPageScreen = () => {
                     <CustomTextField
                       value={apiKey}
                       onChange={handleApiKeyInputChange}
-                      placeholder='Enter API key to activate supplier discovery'
+                      placeholder='Enter Activation Key to activate supplier discovery'
                       error={isApiKeyError}
                       translate='no'
                       autoComplete='off'
@@ -907,7 +907,7 @@ const SearchPageScreen = () => {
                                   <Tooltip
                                     title={
                                       !isDpwadamRole
-                                        ? 'In order to use the AI for search, please provide a valid Veridion API key in the API key field at the top of the page'
+                                        ? 'In order to use the AI for search, please provide a valid Veridion Activation Key in the Activation Key field at the top of the page'
                                         : ''
                                     }
                                   >

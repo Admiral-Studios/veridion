@@ -17,7 +17,15 @@ const ItemCard: FC<Props> = ({ title, icon, text, sx, link, body, titleButton })
   const { push } = useRouter()
 
   return (
-    <Box sx={{ ...(sx && { ...sx }) }}>
+    <Box
+      sx={{
+        gridColumn: 'span 3',
+        '@media(max-width: 688px)': {
+          gridColumn: 'span 6'
+        },
+        ...(sx && { ...sx })
+      }}
+    >
       <Box
         sx={theme => ({
           height: '100%',

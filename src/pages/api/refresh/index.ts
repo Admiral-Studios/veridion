@@ -1,12 +1,13 @@
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import { NextApiRequest, NextApiResponse } from 'next/types'
 import { setCookie } from 'src/utils/cookies'
+import { withAuth } from '../middleware/authMiddleware'
 import ExecuteQuery from 'src/utils/db'
 
 const secret = process.env.NEXT_PUBLIC_JWT_SECRET
 const accessTokenExpiresIn = '15m'
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const refreshToken = req.cookies.refreshToken
 
@@ -15,7 +16,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         if (secret) {
           const decoded = jwt.verify(refreshToken, secret) as JwtPayload
 
-          const userExists = await ExecuteQuery(`SELECT TOP 1 * FROM users WHERE id='${decoded.id}'`)
+          const userExistsQuery = `
+            SELECT TOP 1 *
+            FROM users
+            WHERE id = @id;
+          `
+
+          const userExists = await ExecuteQuery(userExistsQuery, {
+            id: decoded.id
+          })
 
           if (userExists[0][0].id === decoded.id) {
             const accessToken = jwt.sign({ id: decoded.id }, secret, { expiresIn: accessTokenExpiresIn })
@@ -42,3 +51,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(405).end() // Method not allowed
   }
 }
+
+export default withAuth(handler)

@@ -10,9 +10,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (id) {
         const password_hash = bcrypt.hashSync(newPassword, 8)
 
-        const updateQuery = `UPDATE users SET password_hash = '${password_hash}' WHERE id = '${id}';`
+        const updateQuery = `UPDATE users SET password_hash = @password_hash WHERE id = @id;`
 
-        await ExecuteQuery(updateQuery)
+        await ExecuteQuery(updateQuery, { password_hash, id })
 
         res.status(200).json('Password successfully changed!')
       }

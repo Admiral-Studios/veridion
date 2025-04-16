@@ -1,14 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next/types'
+import { withAuth } from '../../middleware/authMiddleware'
 import ExecuteQuery from 'src/utils/db'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const id = req.body
 
     if (id) {
-      const deleteQuery = `DELETE FROM user_watchlist WHERE id = '${id}';`
+      const deleteQuery = `DELETE FROM user_watchlist WHERE id = @id`
 
-      await ExecuteQuery(deleteQuery)
+      await ExecuteQuery(deleteQuery, { id })
 
       res.status(200).json({ id })
     }
@@ -16,3 +17,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(403).json({ message: 'Failed to delete company' })
   }
 }
+
+export default withAuth(handler)

@@ -4,7 +4,6 @@ import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import axios from 'axios'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
@@ -18,6 +17,7 @@ import { Settings } from 'src/@core/context/settingsContext'
 import ModeToggler from 'src/@core/layouts/components/shared-components/ModeToggler'
 import UserDropdown from 'src/@core/layouts/components/shared-components/UserDropdown'
 import { useAuth } from 'src/hooks/useAuth'
+import { createUpdateUserInHubspot } from 'src/utils/hubspot/createUpdateService'
 
 interface Props {
   hidden: boolean
@@ -40,12 +40,15 @@ const AppBarContent = (props: Props) => {
   const unlockAllFeaturesHandler = async () => {
     setIsUnlockLoading(true)
     trackOnClick('unlock_full_portal')
-    await axios.post('/api/veridion/unlock-all-features', { email: user?.email })
 
     changeUser({ ...user, industryVertical: user?.industry || '', requested_elevanted_access: true }, () => {
       toast.success('Thank you for your response, we will contact you soon!')
       setIsUnlockLoading(false)
     })
+
+    if (user) {
+      await createUpdateUserInHubspot({ ...user, requested_elevanted_access: true })
+    }
   }
 
   return (

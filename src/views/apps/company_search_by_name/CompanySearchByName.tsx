@@ -98,7 +98,7 @@ const CompanySearchByName = () => {
             <CustomTextField
               value={apiKey}
               onChange={handleApiKeyInputChange}
-              placeholder='Enter API key to activate company search by name'
+              placeholder='Enter Activation Key to activate company search by name'
               error={isApiKeyError}
               translate='no'
               autoComplete='off'

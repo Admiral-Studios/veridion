@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next/types'
+import { withAuth } from '../middleware/authMiddleware'
 import ExecuteQuery from 'src/utils/db'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const findUserQuery = `SELECT * FROM users`
 
@@ -13,3 +14,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(403).json({ message: 'Failed to get users by role' })
   }
 }
+
+export default withAuth(handler)

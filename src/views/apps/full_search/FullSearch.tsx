@@ -22,8 +22,8 @@ import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
 import FilterTemplates from './components/FilterTemplates'
 import { setFilterFromJson } from './utils/setFilterFromJson'
-import CompanyCard from './components/CompanyCard'
-import MoreDataModal from './components/MoreDataModal'
+import CompanyCard from '../../../shared/components/CompanyCard'
+import MoreDataModal from '../../../shared/components/MoreDataModal'
 import { useAuth } from 'src/hooks/useAuth'
 import SavedLists from './components/SavedLists'
 import NewJsonEditor from 'src/shared/components/NewJsonEditor'
@@ -261,7 +261,7 @@ const FullSearch = memo(() => {
               <CustomTextField
                 value={apiKey}
                 onChange={handleApiKeyInputChange}
-                placeholder='Enter API key to activate supplier discovery'
+                placeholder='Enter Activation Key to activate supplier discovery'
                 error={isApiKeyError}
                 translate='no'
                 autoComplete='off'

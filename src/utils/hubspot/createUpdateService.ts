@@ -29,6 +29,11 @@ export const createUpdateUserInHubspot = async (user: UserDataType) => {
         objectTypeId: '0-1',
         name: 'industry_vertical',
         value: industryVerticalFields[user.industry as keyof typeof industryVerticalFields] || ''
+      },
+      {
+        objectTypeId: '0-1',
+        name: 'has_requested_full_access_to_explore',
+        value: user.requested_elevanted_access
       }
     ]
   }

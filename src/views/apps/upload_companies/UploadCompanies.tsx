@@ -327,7 +327,7 @@ const UploadCompanies = () => {
 
           if (enrich_response?.status === 401) {
             setIsApiKeyError(true)
-            toast.error('Invalid API Key, please, try again', { duration: 5000 })
+            toast.error('Invalid Activation Key, please, try again', { duration: 5000 })
 
             nProgress.done()
 
@@ -358,7 +358,7 @@ const UploadCompanies = () => {
 
             case 401: {
               setIsApiKeyError(true)
-              toast.error('Invalid API Key, please, try again', {
+              toast.error('Invalid Activation Key, please, try again', {
                 duration: 5000
               })
               nProgress.done()
@@ -687,7 +687,7 @@ const UploadCompanies = () => {
                             <CustomTextField
                               value={apiKey}
                               onChange={handleApiKeyInputChange}
-                              placeholder='API Key'
+                              placeholder='Activation Key'
                               error={isApiKeyError}
                               translate='no'
                               autoComplete='off'

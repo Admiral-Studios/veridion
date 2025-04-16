@@ -18,9 +18,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       email: string
     }
 
-    const query = `SELECT TOP 1 * FROM users WHERE email='${email}'`
+    const query = `SELECT TOP 1 * FROM users WHERE email=@email`
 
-    const findUser = await ExecuteQuery(query)
+    const findUser = await ExecuteQuery(query, {email})
 
     if (!findUser[0].length) {
       return res.status(403).json({ message: 'Account with this email not found' })

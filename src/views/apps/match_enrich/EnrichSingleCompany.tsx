@@ -138,7 +138,7 @@ const EnrichSingleCompany: React.FC<EnrichSingleCompanyProps> = React.memo(
           if (enrich_response?.status === 401) {
             setIsApiKeyError(true)
             nProgress.done()
-            toast.error('Invalid API Key, please, try again', { duration: 5000 })
+            toast.error('Invalid Activation Key, please, try again', { duration: 5000 })
 
             return
           }
@@ -169,7 +169,7 @@ const EnrichSingleCompany: React.FC<EnrichSingleCompanyProps> = React.memo(
             case 401: {
               setIsApiKeyError(true)
               nProgress.done()
-              toast.error('Invalid API Key, please, try again', {
+              toast.error('Invalid Activation Key, please, try again', {
                 duration: 5000
               })
 
@@ -390,7 +390,7 @@ const EnrichSingleCompany: React.FC<EnrichSingleCompanyProps> = React.memo(
               <CustomTextField
                 value={apiKey}
                 onChange={handleApiKeyInputChange}
-                placeholder='API Key'
+                placeholder='Activation Key'
                 error={isApiKeyError}
                 translate='no'
                 autoComplete='off'

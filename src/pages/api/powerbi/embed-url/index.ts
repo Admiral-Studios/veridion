@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next/types'
 
-export default async function handler(request: NextApiRequest, response: NextApiResponse) {
+async function handler(request: NextApiRequest, response: NextApiResponse) {
   let authenticationToken = request.body.authenticationToken
 
   const { type } = request.query as { type: string }
@@ -40,3 +40,5 @@ export default async function handler(request: NextApiRequest, response: NextApi
 
   return response.status(200).json(res)
 }
+
+export default handler

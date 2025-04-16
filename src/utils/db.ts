@@ -1,11 +1,14 @@
-import sql, { ConnectionPool, Request, VarChar } from 'mssql'
+import sql, { ConnectionPool, Request } from 'mssql'
 import { dbConfig } from 'src/configs/db'
 
-export default async function ExecuteQuery(query: string): Promise<any> {
+export default async function ExecuteQuery(query: string, params: Record<string, any> = {}): Promise<any> {
+  const pool: ConnectionPool = await sql.connect(dbConfig)
   try {
-    const pool: ConnectionPool = await sql.connect(dbConfig)
     const request: Request = pool.request()
-    request.input('input_parameter', VarChar, 'value') // Add this line if you have parameters in your query.
+
+    Object.entries(params).forEach(([key, value]) => {
+      request.input(key, value)
+    })
 
     const result = await request.query(query)
 

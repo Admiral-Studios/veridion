@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Grid, Typography } from '@mui/material'
 import React, { useCallback, useState } from 'react'
 import jwt from 'jsonwebtoken'
 import CustomTextField from 'src/@core/components/mui/text-field'
@@ -6,7 +6,6 @@ import { CountryType } from '../product_search/configs/countriesMapping'
 import axios from 'axios'
 import { DataCard } from './components/Card'
 import { makeCardsData } from './utils/makeCardsData'
-import { makeChartsData } from './utils/makeChartsData'
 import nProgress from 'nprogress'
 import NaicsSelect from './components/NaicsSelect'
 import LocationSelector from './components/LocationSelector'
@@ -18,6 +17,10 @@ import { CompanySearchProductType } from 'src/types/apps/veridionTypes'
 import NoFiltersIcon from 'src/shared/icons/NoFiltersIcon'
 import IconifyIcon from 'src/@core/components/icon'
 import { addThousandsDelimiter } from 'src/utils/numbers/addThousandsDelimeter'
+import CompanyCard from 'src/shared/components/CompanyCard'
+import MoreDataModal from 'src/shared/components/MoreDataModal'
+import { makeChartsDatagridData } from './utils/makeChartsDatagridData'
+import { DataGrid } from '@mui/x-data-grid'
 
 const DEFAULT_LIMIT = 1000
 
@@ -28,7 +31,7 @@ type CardsDataType = {
   companiesCountReturnedByApi: number
 }
 
-const MarketIntelligence = () => {
+const KeywordsSearch = () => {
   const [naics, setNaics] = useState<{ [key: number]: string }>({})
   const [naicsRelation, setNaicsRelation] = useState('in')
   const [geographyIn, setGeographyIn] = useState<CountryType[]>([])
@@ -36,18 +39,16 @@ const MarketIntelligence = () => {
   const [locationTypes, setLocationTypes] = useState({ main: false, secondary: false })
   const [inputKeywords, setInputKeywords] = useState<string[]>([])
   const [excludeKeywords, setExcludeKeywords] = useState('')
-  const [keywordsSupplierTypes, setKeywordsSupplierTypes] = useState({
-    distributor: false,
-    service_provider: false,
-    manufacturer: false
-  })
+  const [companies, setCompanies] = useState<CompanySearchProductType[] | null>(null)
+  const [morePreviewData, setMorePreviewData] = useState<CompanySearchProductType | null>(null)
+
   const [strictness, setStrictness] = useState<number | undefined>(undefined)
 
   const [apiKey, setApiKey] = useState('')
   const [isApiKeyError, setIsApiKeyError] = useState(false)
 
   const [cardsData, setCardsData] = useState<CardsDataType | null>(null)
-  const [chartsData, setChartsData] = useState<ReturnType<typeof makeChartsData> | null>(null)
+  const [chartsData, setChartsData] = useState<ReturnType<typeof makeChartsDatagridData> | null>(null)
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -69,8 +70,7 @@ const MarketIntelligence = () => {
       locationTypes,
       inputKeywords,
       excludeKeywords,
-      strictness,
-      keywordsSupplierTypes
+      strictness
     )
 
     try {
@@ -100,13 +100,18 @@ const MarketIntelligence = () => {
       }
 
       setCardsData(makeCardsData(allResults, geographyIn, companiesCountReturnedByApi))
-      setChartsData(makeChartsData(allResults))
+      setChartsData(makeChartsDatagridData(allResults))
+      setCompanies(allResults.slice(0, 5))
     } catch (error: any) {
       toast.error(error?.response?.data?.message || 'Something went wrong, please try again')
     }
 
     setIsLoading(false)
     nProgress.done()
+  }
+
+  const moreButtonHandler = (company: CompanySearchProductType) => {
+    setMorePreviewData(company)
   }
 
   const onChangeNaicsRelation = (newRelation: string) => {
@@ -135,7 +140,7 @@ const MarketIntelligence = () => {
           value={apiKey}
           onChange={handleApiKeyInputChange}
           error={isApiKeyError}
-          placeholder='Enter API key to activate supplier discovery'
+          placeholder='Enter Activation Key to activate supplier discovery'
           translate='no'
           autoComplete='off'
           type='password'
@@ -169,10 +174,8 @@ const MarketIntelligence = () => {
             inputKeywords={inputKeywords}
             excludeKeywords={excludeKeywords}
             strictness={strictness}
-            keywordsSupplierTypes={keywordsSupplierTypes}
             setInputKeywords={(newKeywords: string[]) => setInputKeywords(newKeywords)}
             setExcludeKeywords={(newKeywords: string) => setExcludeKeywords(newKeywords)}
-            setSupplierTypes={(newSupplierTypes: any) => setKeywordsSupplierTypes(newSupplierTypes)}
             setStrictness={(newStrictness: number) => setStrictness(newStrictness)}
           />
         </Grid>
@@ -183,6 +186,29 @@ const MarketIntelligence = () => {
           </Button>
         </Grid>
       </Grid>
+
+      {companies && (
+        <Grid item sx={{ display: 'flex', flexDirection: 'column', gap: 4, mt: 6 }}>
+          <Accordion>
+            <AccordionSummary expandIcon={<IconifyIcon fontSize='1.5rem' icon='tabler:chevron-down' />}>
+              <Typography variant='h5'>Preview 5 Companies</Typography>
+            </AccordionSummary>
+
+            <AccordionDetails>
+              {companies.map(company => (
+                <CompanyCard
+                  key={company.veridion_id}
+                  company={company}
+                  selected={false}
+                  saved={false}
+                  preview
+                  onClickMoreButton={moreButtonHandler}
+                />
+              ))}
+            </AccordionDetails>
+          </Accordion>
+        </Grid>
+      )}
 
       {cardsData ? (
         cardsData.companiesLength ? (
@@ -311,59 +337,105 @@ const MarketIntelligence = () => {
             </Grid>
           </Grid>
 
-          <Box
-            mt={10}
-            sx={{
-              width: '100%',
+          <Grid container item spacing={2}>
+            <Grid xs={12} md={6} item>
+              <Box
+                mt={10}
+                sx={{
+                  width: '100%',
 
-              overflowY: 'auto'
-            }}
-          >
-            <Typography variant='h5' textAlign='center'>
-              Number of companies by business tags
-            </Typography>
+                  overflowY: 'auto'
+                }}
+              >
+                <Typography variant='h5' textAlign='center'>
+                  Number of companies by business tags
+                </Typography>
 
-            <Box
-              mt={4}
-              sx={{
-                width: '100%',
-                overflowX: 'auto',
-                overflowY: 'hidden',
-                px: 8
-              }}
-            >
-              <Chart data={chartsData.businessTags} seriesName='Number of companies' isVertical />
-            </Box>
-          </Box>
+                <Box
+                  mt={4}
+                  sx={{
+                    width: '100%',
+                    overflowX: 'auto',
+                    overflowY: 'hidden',
+                    px: 8
+                  }}
+                >
+                  <DataGrid
+                    autoHeight={false}
+                    sx={{ mt: 4, height: 500 }}
+                    getRowHeight={() => 50}
+                    rowSelection={false}
+                    columns={[
+                      {
+                        field: 'title',
+                        headerName: 'Business Tags',
+                        width: 200
+                      },
+                      {
+                        field: 'values',
+                        headerName: '# companies',
+                        width: 200
+                      }
+                    ]}
+                    rows={chartsData.businessTags}
+                    getRowId={row => row.title}
+                  />
+                </Box>
+              </Box>
+            </Grid>
 
-          <Box
-            mt={10}
-            sx={{
-              width: '100%',
-              overflowX: 'auto',
-              overflowY: 'hidden'
-            }}
-          >
-            <Typography variant='h5' textAlign='center'>
-              Number of companies by city
-            </Typography>
+            <Grid xs={12} md={6} item>
+              <Box
+                mt={10}
+                sx={{
+                  width: '100%',
+                  overflowX: 'auto',
+                  overflowY: 'hidden'
+                }}
+              >
+                <Typography variant='h5' textAlign='center'>
+                  Number of companies by cities
+                </Typography>
 
-            <Box
-              mt={4}
-              sx={{
-                width: '100%',
-                overflowX: 'auto',
-                overflowY: 'hidden',
-                px: 8
-              }}
-            >
-              <Chart data={chartsData.companiesByCities} seriesName='Number of companies' isVertical />
-            </Box>
-          </Box>
+                <Box
+                  mt={4}
+                  sx={{
+                    width: '100%',
+                    overflowX: 'auto',
+                    overflowY: 'hidden',
+                    px: 8
+                  }}
+                >
+                  <DataGrid
+                    autoHeight={false}
+                    sx={{ mt: 4, height: 500 }}
+                    getRowHeight={() => 50}
+                    rowSelection={false}
+                    columns={[
+                      {
+                        field: 'title',
+                        headerName: 'Cities',
+                        width: 200
+                      },
+                      {
+                        field: 'values',
+                        headerName: '# companies',
+                        width: 200
+                      }
+                    ]}
+                    rows={chartsData.companiesByCities}
+                    getRowId={row => row.title}
+                  />
+                </Box>
+              </Box>
+            </Grid>
+          </Grid>
         </>
       )}
+
+      <MoreDataModal moreData={morePreviewData} onClose={() => setMorePreviewData(null)} />
     </Grid>
   )
 }
 
-export default MarketIntelligence
+export default KeywordsSearch

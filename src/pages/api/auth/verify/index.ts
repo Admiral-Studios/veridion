@@ -1,13 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next/types'
 import jwt from 'jsonwebtoken'
-import ExecuteQuery from 'src/utils/db'
 import { verifyHubSpotEmail } from 'src/utils/verifyHubSpotEmails'
 import { createUpdateUserInHubspot } from 'src/utils/hubspot/createUpdateService'
 import { createWelcomeTemplate } from 'src/utils/mail-templates/welcomeEmailTemplate'
 import { transporter } from 'src/utils/nodemailer'
+import ExecuteQuery from 'src/utils/db'
 
 const senderAliasEmail = process.env.NEXT_PUBLIC_SENDER_ALIAS_EMAIL
-const salesEmail = process.env.NEXT_PUBLIC_SALES_EMAIL
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { token } = req.body
@@ -32,19 +31,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   })
 
-  const getUserQuery = `SELECT TOP 1 u.*, r.role FROM users u JOIN roles r ON u.role_id = r.id WHERE u.email='${email}'`
-  const findUser = await ExecuteQuery(getUserQuery)
+  const getUserQuery = `
+    SELECT TOP 1 u.*, r.role
+    FROM users u
+    JOIN roles r ON u.role_id = r.id
+    WHERE u.email = @email
+  `
+
+  const findUser = await ExecuteQuery(getUserQuery, { email })
   const currentUser = findUser[0][0]
 
   if (!currentUser.is_verified) {
-    const query = `UPDATE users SET is_verified = '${true}' WHERE email = '${email}';`
+    const query = `UPDATE users SET is_verified = @isVerified WHERE email = @email`
 
-    await ExecuteQuery(query)
+    await ExecuteQuery(query, {
+      isVerified: true,
+      email: email
+    })
 
     await transporter.sendMail({
       from: senderAliasEmail,
       to: currentUser.email,
-      bcc: salesEmail,
       subject: 'Welcome to Explore Veridion',
       html: createWelcomeTemplate(currentUser.name)
     })

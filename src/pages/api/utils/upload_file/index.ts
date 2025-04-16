@@ -4,6 +4,7 @@ import fs from 'fs'
 import csvParser from 'csv-parser'
 
 import { CsvCompanyUploadType } from 'src/types/apps/veridionTypes'
+import { withAuth } from '../../middleware/authMiddleware'
 
 export const config = {
   api: {
@@ -11,7 +12,7 @@ export const config = {
   }
 }
 
-export default async function handler(request: NextApiRequest, response: NextApiResponse) {
+async function handler(request: NextApiRequest, response: NextApiResponse) {
   if (request.method !== 'POST') {
     return response.status(405).json({ error: 'Method Not Allowed' })
   }
@@ -90,3 +91,5 @@ function checkHeaders(actualHeaders: string[], expectedHeaders: string[]): boole
     return actualHeaders.includes(header)
   })
 }
+
+export default withAuth(handler)

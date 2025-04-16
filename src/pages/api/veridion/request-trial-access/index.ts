@@ -2,8 +2,9 @@ import { NextApiRequest, NextApiResponse } from 'next/types'
 import { createNewSearchTrialAccessTemplate } from 'src/utils/mail-templates/newSearchTrialAccess'
 
 import { transporter } from 'src/utils/nodemailer'
+import { withAuth } from '../../middleware/authMiddleware'
 
-export default async function handler(request: NextApiRequest, response: NextApiResponse) {
+async function handler(request: NextApiRequest, response: NextApiResponse) {
   const { email, fullName, role } = request.body as {
     email: string
     fullName: string
@@ -14,7 +15,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
     await transporter.sendMail({
       from: 'vlad@storiesofdata.com',
       to: process.env.NEXT_PUBLIC_SALES_EMAIL,
-      subject: 'Request Trial Access',
+      subject: 'Request Access To Scout PRO',
       html: createNewSearchTrialAccessTemplate(email, fullName, role)
     })
 
@@ -23,3 +24,5 @@ export default async function handler(request: NextApiRequest, response: NextApi
 
   return response.status(400).json('Something went wrong!')
 }
+
+export default withAuth(handler)

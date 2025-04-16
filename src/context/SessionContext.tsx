@@ -16,28 +16,28 @@ export const SessionContext = createContext<{}>({})
 export const SessionProvider: React.FC<SessionContextProviderProps> = ({ children }) => {
   const { user } = useAuth()
 
-  // useEffect(() => {
-  //   let interval: string | number | NodeJS.Timeout | undefined
-  //   if (user?.id) {
-  //     const getSessionDuration = async () => {
-  //       const { data } = await axios.post('/api/session/get', { userId: user.id })
+  useEffect(() => {
+    let interval: string | number | NodeJS.Timeout | undefined
+    if (user?.id) {
+      const getSessionDuration = async () => {
+        const { data } = await axios.post('/api/session/get', { userId: user.id })
 
-  //       let currentDuration = +data.sessionDuration
+        let currentDuration = +data.sessionDuration
 
-  //       interval = setInterval(() => {
-  //         axios.patch('/api/session/update', {
-  //           userId: user.id,
-  //           currentDuration: (currentDuration += INTERVAL_TIMESTAMP / 1000),
-  //           loginAt: data.loginAt
-  //         })
-  //       }, INTERVAL_TIMESTAMP)
-  //     }
+        interval = setInterval(() => {
+          axios.patch('/api/session/update', {
+            userId: user.id,
+            currentDuration: (currentDuration += INTERVAL_TIMESTAMP / 1000),
+            loginAt: data.loginAt
+          })
+        }, INTERVAL_TIMESTAMP)
+      }
 
-  //     getSessionDuration()
-  //   }
+      getSessionDuration()
+    }
 
-  //   return () => clearInterval(interval)
-  // }, [user])
+    return () => clearInterval(interval)
+  }, [user])
 
   return <SessionContext.Provider value={{}}>{children}</SessionContext.Provider>
 }

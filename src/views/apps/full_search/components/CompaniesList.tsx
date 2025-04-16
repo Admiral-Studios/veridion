@@ -1,12 +1,12 @@
 import { Autocomplete, Box, Button, Link, Pagination, TextField, Tooltip, Typography } from '@mui/material'
 import React, { ChangeEvent, FC, useEffect, useState } from 'react'
-import CompanyCard from './CompanyCard'
+import CompanyCard from '../../../../shared/components/CompanyCard'
 import Icon from 'src/@core/components/icon'
 import { CompanySearchProductType, CompanyType, ProductsProjectType } from 'src/types/apps/veridionTypes'
 import toast from 'react-hot-toast'
 import { useAuth } from 'src/hooks/useAuth'
 import nProgress from 'nprogress'
-import MoreDataModal from './MoreDataModal'
+import MoreDataModal from '../../../../shared/components/MoreDataModal'
 import { addThousandsDelimiter } from 'src/utils/numbers/addThousandsDelimeter'
 
 type Props = {

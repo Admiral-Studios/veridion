@@ -1,19 +1,14 @@
 import jwt from 'jsonwebtoken'
 import { NextApiRequest, NextApiResponse } from 'next/types'
 import bcrypt from 'bcrypt'
-import sql, { ConnectionPool, Request } from 'mssql'
 
 import { transporter } from 'src/utils/nodemailer'
 import { createVerificationEmail } from 'src/utils/mail-templates/emailTemplate'
-import { dbConfig } from 'src/configs/db'
+import ExecuteQuery from 'src/utils/db'
 
 const senderAliasEmail = process.env.NEXT_PUBLIC_SENDER_ALIAS_EMAIL
-const salesEmail = process.env.NEXT_PUBLIC_SALES_EMAIL
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const pool: ConnectionPool = await sql.connect(dbConfig)
-  const request: Request = pool.request()
-
   if (req.method === 'POST') {
     const jwtSecret = process.env.NEXT_PUBLIC_JWT_SECRET
     if (!jwtSecret) {
@@ -30,9 +25,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       industryVertical: string
     }
 
-    const query = `SELECT TOP 1 * FROM users WHERE email='${email}'`
+    const query = `SELECT TOP 1 * FROM users WHERE email = @email`
 
-    const findUser = (await request.query(query)).recordset
+    const findUser = await ExecuteQuery(query, { email })
 
     const password_hash = bcrypt.hashSync(password, 8)
 
@@ -40,18 +35,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(200).json({ message: 'This email is already is use' })
     }
 
-    const querySelectVisitorRole = `SELECT id FROM roles WHERE role = 'visitor';`
-    const roleResult = await request.query(querySelectVisitorRole)
+    const querySelectVisitorRole = `SELECT id FROM roles WHERE role = @role`
+    const roleResult = await ExecuteQuery(querySelectVisitorRole, { role: 'visitor' })
 
-    const roleId = roleResult.recordset[0].id
+    const roleId = roleResult[0]?.id
 
-    request.input('company', sql.NVarChar, company || '')
-    request.input('name', sql.NVarChar, name || '')
-    request.input('title', sql.NVarChar, title || '')
-    request.input('industry', sql.NVarChar, industryVertical || '')
+    const querySave = `
+      INSERT INTO Users (user_name, email, password_hash, company, name, title, is_verified, role_id, industry)
+      VALUES (@userName, @email, @passwordHash, @company, @name, @title, @isVerified, @roleId, @industry)
+    `
 
-    const querySave = `INSERT INTO Users (user_name, email, password_hash, company, name, title, is_verified, role_id, industry) VALUES ('${user_name}', '${email}', '${password_hash}', @company, @name, @title, '${false}', '${roleId}', @industry);`
-    await request.query(querySave)
+    const params = {
+      userName: user_name,
+      email: email,
+      passwordHash: password_hash,
+      company: company || '',
+      name: name || '',
+      title: title || '',
+      isVerified: false,
+      roleId: roleId,
+      industry: industryVertical || ''
+    }
+
+    await ExecuteQuery(querySave, params)
 
     const token = jwt.sign({ email }, jwtSecret, { expiresIn: '1d' })
 
@@ -60,7 +66,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await transporter.sendMail({
       from: senderAliasEmail,
       to: email,
-      bcc: salesEmail,
       subject: 'Verify your account',
       html: createVerificationEmail(email, magicLink)
     })

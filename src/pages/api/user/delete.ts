@@ -1,18 +1,20 @@
 import { NextApiRequest, NextApiResponse } from 'next/types'
+import { withAuth } from '../middleware/authMiddleware'
 import ExecuteQuery from 'src/utils/db'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     try {
       const { id } = req.body
 
       if (id) {
-        const deleteUserQuery = `DELETE FROM users WHERE id = '${id}'; 
-        DELETE FROM user_watchlist WHERE user_id = '${id}'; 
-        DELETE FROM user_activity WHERE user_id = '${id}'; 
+        const deleteUserQuery = `
+          DELETE FROM users WHERE id = @id;
+          DELETE FROM user_watchlist WHERE user_id = @id;
+          DELETE FROM user_activity WHERE user_id = @id;
         `
 
-        await ExecuteQuery(deleteUserQuery)
+        await ExecuteQuery(deleteUserQuery, { id })
 
         res.status(200).json({ id })
       }
@@ -21,3 +23,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   }
 }
+
+export default withAuth(handler)

@@ -1,4 +1,4 @@
-import { Box, Checkbox, FormControlLabel, Grid, IconButton, Menu, Radio, Tooltip, Typography } from '@mui/material'
+import { Box, FormControlLabel, Grid, IconButton, Menu, Radio, Tooltip, Typography } from '@mui/material'
 import React, { useState } from 'react'
 
 import Icon from 'src/@core/components/icon'
@@ -7,8 +7,6 @@ import FilterItemValueBox from './FilterItemValueBox'
 import OperandsInput from '../../../../shared/components/OperandsInput'
 import CustomTextField from 'src/@core/components/mui/text-field'
 import { generalStrictnessLabels } from '../../product_search/configs/labels'
-
-const supplier_types = ['distributor', 'manufacturer', 'service_provider']
 
 const strictnessTypes = {
   high: 1,
@@ -19,31 +17,23 @@ const strictnessTypes = {
 type Props = {
   inputKeywords: string[]
   excludeKeywords: string
-  keywordsSupplierTypes: any
   strictness: number | undefined
   setInputKeywords: (newKeywords: string[]) => void
   setExcludeKeywords: (newKeywords: string) => void
-  setSupplierTypes: (newSupplierTypes: any) => void
   setStrictness: (newStrictness: number) => void
 }
 
 const KeywordsInput = ({
   inputKeywords,
   excludeKeywords,
-  keywordsSupplierTypes,
   strictness,
   setInputKeywords,
   setExcludeKeywords,
-  setStrictness,
-  setSupplierTypes
+  setStrictness
 }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
   const openMenu = Boolean(anchorEl)
-
-  const displayedSupplierTypes = supplier_types.filter(
-    t => keywordsSupplierTypes[t as keyof typeof keywordsSupplierTypes]
-  )
 
   const addOperands = (operands: string[]) => {
     setInputKeywords(operands)
@@ -91,17 +81,6 @@ const KeywordsInput = ({
               values={[
                 { label: 'Match', value: inputKeywords || [] },
                 { label: 'Exclude', value: [excludeKeywords || ''] }
-              ]}
-            />
-          )}
-
-          {!!displayedSupplierTypes.length && (
-            <FilterItemValueBox
-              values={[
-                {
-                  label: 'Supplier Types',
-                  value: displayedSupplierTypes
-                }
               ]}
             />
           )}
@@ -197,58 +176,6 @@ const KeywordsInput = ({
             </Box>
 
             <Grid item container xs={12} mt={4}>
-              <Box
-                sx={{
-                  width: '100%',
-                  padding: '15px 10px',
-                  border: '1px solid #F8F8F8',
-                  borderRadius: 2,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 2
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: '16px',
-                    fontWeight: 600,
-                    color: '#000'
-                  }}
-                >
-                  Supplier Type:
-                </Typography>
-
-                {supplier_types.map(t => (
-                  <FormControlLabel
-                    key={t}
-                    label={t}
-                    sx={{
-                      '.MuiCheckbox-root': {
-                        p: 0
-                      },
-                      '.MuiTypography-root': {
-                        marginLeft: 1
-                      },
-                      marginLeft: 0,
-                      marginRight: 0
-                    }}
-                    control={
-                      <Checkbox
-                        checked={keywordsSupplierTypes[t as keyof typeof keywordsSupplierTypes]}
-                        onChange={e => {
-                          const updatedSupplierTypes = {
-                            ...(keywordsSupplierTypes || keywordsSupplierTypes),
-                            [t]: e.target.checked
-                          }
-
-                          setSupplierTypes(updatedSupplierTypes)
-                        }}
-                      />
-                    }
-                  />
-                ))}
-              </Box>
-
               <Box
                 sx={{
                   width: '100%',

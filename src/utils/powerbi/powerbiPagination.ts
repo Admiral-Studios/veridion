@@ -8,13 +8,13 @@ export const powerBiPagesConfig = {
   categories: 'Categories',
   locations: 'Locations',
   products_and_services: 'Products & Services',
-  esg_report: 'ESG Report',
-  esg_score_by_pillar: 'ESG Score by Pillar',
+  esg_score_by_pillar: 'Score by Pillar',
   commitments_news: 'Commitments:News',
-  esg_companies_compared: 'ESG Companies Compared',
-  esg_score_by_risk_criteria: 'ESG Score by Risk  Criteria',
-  esg_emissions_and_targets: 'ESG Emissions & Targets',
-  esg_score_comparison: 'ESG Score Comparison'
+  esg_companies_compared: 'Company Comparison',
+  esg_score_by_risk_criteria: 'Score by Risk  Criteria',
+  esg_emissions_and_targets: 'Emissions & Targets',
+  esg_score_comparison: 'Score Comparison',
+  esg_news: 'News'
 }
 
 let pages = [] as pbi.Page[]

@@ -44,15 +44,9 @@ const HomeLanding = () => {
           width: '100%',
           mt: 8,
           display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
+          gridTemplateColumns: 'repeat(6, 1fr)',
           justifyContent: 'center',
-          gap: 4,
-          '@media(max-width: 944px)': {
-            gridTemplateColumns: 'repeat(2, 1fr)'
-          },
-          '@media(max-width: 688px)': {
-            gridTemplateColumns: 'repeat(1, 1fr)'
-          }
+          gap: 4
         }}
       >
         {itemsCardsData(user).map(({ subject, ...data }) =>

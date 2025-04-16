@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next/types'
 import { Validator } from 'jsonschema'
 import jwt from 'jsonwebtoken'
 import { matchApiUrl } from 'src/configs/api'
+import { withAuth } from '../../middleware/authMiddleware'
 
 const matchEnrichSchema = {
   type: 'object',
@@ -34,7 +35,7 @@ const matchEnrichSchema = {
   required: ['legal_names', 'commercial_names', 'address_txt', 'phone_number', 'website']
 }
 
-export default async function handler(request: NextApiRequest, response: NextApiResponse) {
+async function handler(request: NextApiRequest, response: NextApiResponse) {
   const keyFromHeaders = request.headers.authorization || ''
 
   const jwtSecret = process.env.NEXT_PUBLIC_JWT_SECRET
@@ -47,7 +48,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
   const payload = keyFromHeaders ? (jwt.decode(keyFromHeaders) as { apiKey: string }) : null
 
   if (!payload?.apiKey) {
-    return response.status(401).json({ message: 'API Key not provided' })
+    return response.status(401).json({ message: 'Activation Key not provided' })
   }
 
   jwt.verify(keyFromHeaders, jwtSecret, function (err: any) {
@@ -97,3 +98,5 @@ export default async function handler(request: NextApiRequest, response: NextApi
   const res = await fetchResponse.json()
   response.status(200).json(res)
 }
+
+export default withAuth(handler)

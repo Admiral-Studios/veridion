@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next/types'
+import { withAuth } from '../../middleware/authMiddleware'
 import ExecuteQuery from 'src/utils/db'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { subject, json_query, messages, id, user_id } = req.body as {
       subject: string
@@ -11,18 +12,48 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       user_id: number
     }
 
-    const insertQuery = `UPDATE user_ai_threads SET subject = '${subject}', json_query = '${json_query}' WHERE id = '${id}'`
+    const updateQuery = `
+      UPDATE user_ai_threads
+      SET subject = @subject, json_query = @json_query
+      WHERE id = @id;
+    `
 
-    await ExecuteQuery(insertQuery)
+    const updateParams = {
+      subject: subject,
+      json_query: json_query,
+      id: id
+    }
 
-    const insertDeleteMessagesQuery = `DELETE FROM ai_thread_messages WHERE thread_id = '${id}'; ${messages
-      .map(message => `INSERT INTO ai_thread_messages (thread_id, message) VALUES ('${id}', '${message}');`)
-      .join('')}`
+    await ExecuteQuery(updateQuery, updateParams)
 
-    await ExecuteQuery(insertDeleteMessagesQuery)
+    const deleteMessagesQuery = `
+      DELETE FROM ai_thread_messages WHERE thread_id = @id;
+    `
+
+    await ExecuteQuery(deleteMessagesQuery, { id })
+
+    const insertMessagesQuery = messages
+      .map(
+        () => `
+        INSERT INTO ai_thread_messages (thread_id, message)
+        VALUES (@id, @message);
+        `
+      )
+      .join('')
+
+    const messageParams = messages.reduce((acc: { [key: string]: string }, message, id) => {
+      acc[`message_${id}`] = message
+      acc['id'] = id.toString()
+
+      return acc
+    }, {})
+
+    await ExecuteQuery(insertMessagesQuery, messageParams)
 
     res.status(200).json({ subject, json_query, messages, id, user_id })
   } catch (error) {
     res.status(403).json({ message: 'Failed to add thread' })
   }
 }
+
+export default withAuth(handler)
