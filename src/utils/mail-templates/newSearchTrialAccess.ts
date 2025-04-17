@@ -252,7 +252,7 @@ export const createNewSearchTrialAccessTemplate = (email: string, name: string, 
                             color: #000000;
                           "
                         >
-                          <h1 style="font-size: 24px">Request Trial Access To The Supplier Search Page</h1>
+                          <h1 style="font-size: 24px">Request Access To Scout PRO</h1>
                         </div>
                       </td>
                     </tr>

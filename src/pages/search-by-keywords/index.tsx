@@ -1,14 +1,14 @@
 import React from 'react'
 import { SubjectTypes } from 'src/types/acl/subjectTypes'
-import MarketIntelligence from 'src/views/apps/market-intelligence/MarketIntelligence'
+import KeywordsSearch from 'src/views/apps/keywords_search/KeywordsSearch'
 
-const MarketIntelligencePage = () => {
-  return <MarketIntelligence />
+const KeywordsSearchPage = () => {
+  return <KeywordsSearch />
 }
 
-MarketIntelligencePage.acl = {
+KeywordsSearchPage.acl = {
   action: 'read',
-  subject: SubjectTypes.MarketIntelligencePage
+  subject: SubjectTypes.KeywordsSearchPagePage
 }
 
-export default MarketIntelligencePage
+export default KeywordsSearchPage

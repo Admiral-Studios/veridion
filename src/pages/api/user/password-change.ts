@@ -1,18 +1,18 @@
 import { NextApiRequest, NextApiResponse } from 'next/types'
 import bcrypt from 'bcrypt'
+import { withAuth } from '../middleware/authMiddleware'
 import ExecuteQuery from 'src/utils/db'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'PATCH') {
     try {
       const { password, newPassword, id } = req.body as { password: string; newPassword: string; id: string }
 
       if (id) {
-        const query = `SELECT TOP 1 * FROM users WHERE id='${id}'`
-        const findUser = await ExecuteQuery(query)
+        const query = `SELECT TOP 1 * FROM users WHERE id = @id`
+        const [findUser] = await ExecuteQuery(query, { id })
 
-        const user = findUser[0][0]
-
+        const user = findUser[0]
         const passwordIsValid: boolean = bcrypt.compareSync(password, user.password_hash)
 
         if (!passwordIsValid) {
@@ -21,9 +21,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const password_hash = bcrypt.hashSync(newPassword, 8)
 
-        const updateQuery = `UPDATE users SET password_hash = '${password_hash}' WHERE id = '${id}';`
+        const updateQuery = `UPDATE users SET password_hash = @password_hash WHERE id = @id`
 
-        await ExecuteQuery(updateQuery)
+        await ExecuteQuery(updateQuery, { password_hash, id })
 
         res.status(200).json('Password successfully changed!')
       }
@@ -32,3 +32,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   }
 }
+
+export default withAuth(handler)

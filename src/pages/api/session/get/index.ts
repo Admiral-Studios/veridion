@@ -1,13 +1,21 @@
 import { NextApiRequest, NextApiResponse } from 'next/types'
+import { withAuth } from '../../middleware/authMiddleware'
 import ExecuteQuery from 'src/utils/db'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { userId } = req.body as { userId: string }
 
-    const getCreatedSessionQuery = `SELECT TOP 1 * FROM user_activity WHERE user_id='${userId}' ORDER BY login_at DESC;`
+    const getCreatedSessionQuery = `
+      SELECT TOP 1 *
+      FROM user_activity
+      WHERE user_id = @userId
+      ORDER BY login_at DESC;
+    `
 
-    const createdSession = await ExecuteQuery(getCreatedSessionQuery)
+    const createdSession = await ExecuteQuery(getCreatedSessionQuery, {
+      userId: userId
+    })
 
     res
       .status(200)
@@ -16,3 +24,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(401).json({ message: 'Session not found' })
   }
 }
+
+export default withAuth(handler)

@@ -1,25 +1,33 @@
 import { NextApiRequest, NextApiResponse } from 'next/types'
-import sql, { ConnectionPool, Request } from 'mssql'
-import { dbConfig } from 'src/configs/db'
+import { withAuth } from 'src/pages/api/middleware/authMiddleware'
+import ExecuteQuery from 'src/utils/db'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const pool: ConnectionPool = await sql.connect(dbConfig)
-  const request: Request = pool.request()
+async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== 'PATCH') {
+    res.status(405).json({ message: 'Method Not Allowed' })
+  }
 
-  if (req.method === 'PATCH') {
+  try {
     const { settingsId, definedColumn } = req.body as {
       settingsId: string
       definedColumn: string
     }
 
-    request.input('definedColumn', sql.NVarChar, definedColumn) // Add this line if you have parameters in your query.
+    const query = `
+        UPDATE user_export_settings
+        SET user_defined_column = @definedColumn
+        WHERE id = @settingsId;
+      `
 
-    const query = `UPDATE user_export_settings SET user_defined_column = @definedColumn WHERE id = '${settingsId}';`
-
-    await request.query(query)
+    await ExecuteQuery(query, {
+      definedColumn: definedColumn,
+      settingsId: settingsId
+    })
 
     res.status(200).json(req.body)
-  } else {
-    res.status(405).json({ message: 'Method Not Allowed' })
+  } catch (error) {
+    res.status(403).json({ message: 'Failed to update export settings' })
   }
 }
+
+export default withAuth(handler)

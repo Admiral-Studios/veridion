@@ -4,8 +4,9 @@ import { UserDataType } from 'src/context/types'
 import { CsvCompanyUploadType, CompanyMatchEnrichTypeForSave } from 'src/types/apps/veridionTypes'
 import sql, { ConnectionPool, NVarChar, Request, Int, Decimal, DateTime2, SmallInt, BigInt } from 'mssql'
 import { dbConfig } from 'src/configs/db'
+import { withAuth } from '../../middleware/authMiddleware'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   const pool: ConnectionPool = await sql.connect(dbConfig)
   const request: Request = pool.request()
   const { enrichedData, inputData } = req.body as {
@@ -360,10 +361,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (enrichedData.emails?.length) {
     const query = enrichedData.emails
-      .map(
-        email =>
-          `INSERT INTO watchlist_emails (watchlist_id, user_id, email) VALUES ('${result.recordset[0].id}', '${payload.id}', '${email}');`
-      )
+      .map((email, id) => {
+        watchlistRequest.input(`email${id}`, sql.NVarChar, email)
+
+        return `INSERT INTO watchlist_emails (watchlist_id, user_id, email) VALUES (@watchlistId, @userId, @email${id});`
+      })
       .join(' ')
 
     watchlistQuery += query
@@ -402,8 +404,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         watchlistRequest.input(`loc_region${id}`, sql.NVarChar, region)
         watchlistRequest.input(`loc_city${id}`, sql.NVarChar, city)
         watchlistRequest.input(`loc_street${id}`, sql.NVarChar, street)
+        watchlistRequest.input(`loc_country_code${id}`, sql.NVarChar, country_code)
+        watchlistRequest.input(`loc_postcode${id}`, sql.NVarChar, postcode)
+        watchlistRequest.input(`loc_street_number${id}`, sql.NVarChar, street_number)
+        watchlistRequest.input(`loc_latitude${id}`, sql.Decimal(9, 6), latitude)
+        watchlistRequest.input(`loc_longitude${id}`, sql.Decimal(9, 6), longitude)
 
-        return `INSERT INTO watchlist_locations (watchlist_id, user_id, country_code, country, region, city, postcode, street, street_number, latitude, longitude) VALUES ('${result.recordset[0].id}', '${payload.id}', '${country_code}', @loc_country${id}, @loc_region${id}, @loc_city${id}, '${postcode}', @loc_street${id}, '${street_number}', ${latitude}, ${longitude});`
+        return `INSERT INTO watchlist_locations 
+        (watchlist_id, user_id, country_code, country, region, city, postcode, street, street_number, latitude, longitude) 
+        VALUES (@watchlistId, @userId, @loc_country_code${id}, @loc_country${id}, @loc_region${id}, 
+        @loc_city${id}, @loc_postcode${id}, @loc_street${id}, @loc_street_number${id}, @loc_latitude${id}, @loc_longitude${id});`
       })
       .join(' ')
 
@@ -438,10 +448,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (enrichedData?.ncci_codes_28_1?.length) {
     const query = enrichedData.ncci_codes_28_1
-      .map(
-        code =>
-          `INSERT INTO watchlist_ncci_codes_28_1 (watchlist_id, user_id, ncci_codes_28_1) VALUES ('${result.recordset[0].id}', '${payload.id}', '${code}');`
-      )
+      .map((code, id) => {
+        watchlistRequest.input(`ncci_codes_28_1${id}`, sql.NVarChar, code)
+
+        return `INSERT INTO watchlist_ncci_codes_28_1 (watchlist_id, user_id, ncci_codes_28_1) VALUES (@watchlistId, @userId, @ncci_codes_28_1${id});`
+      })
       .join(' ')
 
     watchlistQuery += query
@@ -449,10 +460,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (enrichedData?.phone_numbers?.length) {
     const query = enrichedData.phone_numbers
-      .map(
-        number =>
-          `INSERT INTO watchlist_phone_numbers (watchlist_id, user_id, phone_number) VALUES ('${result.recordset[0].id}', '${payload.id}', '${number}');`
-      )
+      .map((number, id) => {
+        watchlistRequest.input(`phone_numbers${id}`, sql.NVarChar, number)
+
+        return `INSERT INTO watchlist_phone_numbers (watchlist_id, user_id, phone_number) VALUES (@watchlistId, @userId, @phone_numbers${id});`
+      })
       .join(' ')
 
     watchlistQuery += query
@@ -549,8 +561,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (enrichedData.match_details?.matched_on) {
     const query = enrichedData.match_details?.matched_on
-      .map(match => {
-        return `INSERT INTO watchlist_matched_on (watchlist_id, user_id, matched_on) VALUES (@watchlistId, @userId, '${match}')`
+      .map((match, id) => {
+        watchlistRequest.input(`match_${id}`, sql.NVarChar, match || '')
+
+        return `INSERT INTO watchlist_matched_on (watchlist_id, user_id, matched_on) VALUES (@watchlistId, @userId, @match_${id})`
       })
       .join(' ')
 
@@ -559,8 +573,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (enrichedData.registry_ids) {
     const query = enrichedData.registry_ids
-      .map(id => {
-        return `INSERT INTO watchlist_registry_ids (watchlist_id, user_id, registry_ids) VALUES (@watchlistId, @userId, '${id}')`
+      .map((regId, id) => {
+        watchlistRequest.input(`regId_${id}`, sql.NVarChar, regId || '')
+
+        return `INSERT INTO watchlist_registry_ids (watchlist_id, user_id, registry_ids) VALUES (@watchlistId, @userId, @regId_${id})`
       })
       .join(' ')
 
@@ -571,3 +587,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   res.status(200).json({ id: result.recordset[0].id })
 }
+
+export default withAuth(handler)

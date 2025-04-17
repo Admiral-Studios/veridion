@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next/types'
+import { withAuth } from '../middleware/authMiddleware'
 
-export default async function handler(request: NextApiRequest, response: NextApiResponse) {
+async function handler(request: NextApiRequest, response: NextApiResponse) {
   const { type } = request.query as { type: string }
 
   const authenticationToken = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/powerbi/auth-token`)
@@ -26,3 +27,5 @@ export default async function handler(request: NextApiRequest, response: NextApi
     embedUrl
   })
 }
+
+export default withAuth(handler)

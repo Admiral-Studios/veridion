@@ -27,21 +27,37 @@ const trialAccessRequest = async (user: UserDataType) => {
 
 export const itemsCardsData = (user: UserDataType) => [
   {
-    title: 'Market Intelligence',
+    title: 'Coverage',
     icon: 'solar:chart-line-duotone',
     text: 'Explore the coverage of our data. Over 129M companies.',
     subject: SubjectTypes.DashboardCoveragePage,
-    link: '/dashboard/coverage'
+    link: '/dashboard/coverage',
+    sx: {
+      gridColumn: 'span 2'
+    }
+  },
+  {
+    title: 'ESG Analytics',
+    icon: 'material-symbols-light:nest-eco-leaf-outline-rounded',
+    text: 'Explore the interactive report on an ESG sample dataset',
+    subject: SubjectTypes.DashboardESG,
+    link: '/dashboard/esg_score_by_pillar',
+    sx: {
+      gridColumn: 'span 2'
+    }
   },
   {
     title: 'Entity Resolution',
     icon: 'carbon:data-enrichment-add',
     text: 'Bulk and single enrich any company you want.',
     subject: SubjectTypes.EnrichCompaniesPage,
-    link: '/match-enrich/enrich_companies'
+    link: '/match-enrich/enrich_companies',
+    sx: {
+      gridColumn: 'span 2'
+    }
   },
   {
-    title: 'Supplier Search Discovery',
+    title: 'Supplier Discovery',
     titleButton: (
       <Button
         onClick={() => trialAccessRequest(user)}
@@ -60,9 +76,9 @@ export const itemsCardsData = (user: UserDataType) => [
       <Box sx={{ width: '100%', height: '644px', mt: 5 }}>
         <iframe
           data-version='2'
-          src='https://app.supademo.com/showcase/embed/cm3lxlbds0dx3qdk92thl53o1?embed_v=2'
+          src='https://app.supademo.com/demo/cm70jnjft03qmsv0i5lb8pi5u'
           loading='lazy'
-          title='Veridion: Supplier Discovery App'
+          title='Veridion: Scout PRO'
           allow='clipboard-write'
           allowFullScreen
           style={{
@@ -74,10 +90,10 @@ export const itemsCardsData = (user: UserDataType) => [
       </Box>
     ),
     sx: {
-      gridColumn: 'span 2',
-      gridRow: 'span 2',
+      gridColumn: 'span 6',
+      gridRow: 'span 6',
       '@media(max-width: 944px)': {
-        gridTemplateColumns: 'span 1',
+        gridTemplateColumns: 'span 6',
         order: 1
       }
     },
@@ -94,7 +110,7 @@ export const itemsCardsData = (user: UserDataType) => [
     title: 'Search by keywords',
     icon: 'mdi:key-change',
     text: 'Use your keywords - find the companies that use them',
-    subject: SubjectTypes.CompanySearchPage,
+    subject: SubjectTypes.KeywordsSearchPagePage,
     link: '/search-by-keywords'
   },
   {
@@ -119,10 +135,10 @@ export const itemsCardsData = (user: UserDataType) => [
       </Box>
     ),
     sx: {
-      gridColumn: 'span 2',
-      gridRow: 'span 2',
+      gridColumn: 'span 6',
+      gridRow: 'span 6',
       '@media(max-width: 944px)': {
-        gridTemplateColumns: 'span 1',
+        gridTemplateColumns: 'span 6',
         order: 1
       }
     },

@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next/types'
 import jwt from 'jsonwebtoken'
 import { searchApiUrl } from 'src/configs/api'
+import { withAuth } from '../../middleware/authMiddleware'
 
 export const config = {
   api: {
@@ -8,7 +9,7 @@ export const config = {
   }
 }
 
-export default async function handler(request: NextApiRequest, response: NextApiResponse) {
+async function handler(request: NextApiRequest, response: NextApiResponse) {
   try {
     const { pagination_token, page_size } = request.query
 
@@ -26,7 +27,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
     const payload = keyFromHeaders ? (jwt.decode(keyFromHeaders) as { apiKey: string }) : null
 
     if (!payload?.apiKey) {
-      return response.status(401).json({ message: 'API Key not provided' })
+      return response.status(401).json({ message: 'Activation Key not provided' })
     }
 
     const apiKey = payload?.apiKey || ''
@@ -53,8 +54,10 @@ export default async function handler(request: NextApiRequest, response: NextApi
       return response.status(400).json({ message: data?.message })
     }
 
-    response.status(200).json(data)
+    return response.status(200).json(data)
   } catch (error) {
-    return response.status(400)
+    return response.status(400).json({ message: 'Company Search Failed' })
   }
 }
+
+export default withAuth(handler)

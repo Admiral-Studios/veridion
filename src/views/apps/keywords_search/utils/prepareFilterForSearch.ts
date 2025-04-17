@@ -8,8 +8,7 @@ export const prepareFilter = (
   locationTypes: { main: boolean; secondary: boolean },
   input_operands: string[],
   exclude_operands: string,
-  strictness: number | undefined,
-  supplier_types: any
+  strictness: number | undefined
 ) => {
   const filter = {
     filters: {
@@ -93,12 +92,6 @@ export const prepareFilter = (
 
     if (strictness !== undefined) {
       objectToAdd.strictness = strictness
-    }
-
-    const formattedSupplierTypes = Object.keys(supplier_types).filter(k => supplier_types[k])
-
-    if (formattedSupplierTypes?.length) {
-      objectToAdd.supplier_types = formattedSupplierTypes
     }
 
     arrayToPush.push(objectToAdd)

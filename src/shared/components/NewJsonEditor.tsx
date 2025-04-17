@@ -1,6 +1,9 @@
-import { json } from '@codemirror/lang-json'
+// import { json } from '@codemirror/lang-json'
+
 import { Alert, IconButton } from '@mui/material'
-import CodeMirror from '@uiw/react-codemirror'
+
+// import CodeMirror from '@uiw/react-codemirror'
+
 import { FC, useState } from 'react'
 import Icon from 'src/@core/components/icon'
 
@@ -9,23 +12,23 @@ type Props = {
   onChange: (v: string) => void
 }
 
-const NewJsonEditor: FC<Props> = ({ jsonRes, onChange }) => {
+const NewJsonEditor: FC<Props> = () => {
   const [errorMessage, setErrorMessage] = useState('')
 
-  const handleChange = (value: string) => {
-    onChange(value)
-    validateJson(value)
-  }
+  // const handleChange = (value: string) => {
+  //   onChange(value)
+  //   validateJson(value)
+  // }
 
-  const validateJson = (value: string) => {
-    try {
-      JSON.parse(value)
+  // const validateJson = (value: string) => {
+  //   try {
+  //     JSON.parse(value)
 
-      setErrorMessage('')
-    } catch (error: any) {
-      setErrorMessage(error.message)
-    }
-  }
+  //     setErrorMessage('')
+  //   } catch (error: any) {
+  //     setErrorMessage(error.message)
+  //   }
+  // }
 
   return (
     <>
@@ -43,7 +46,7 @@ const NewJsonEditor: FC<Props> = ({ jsonRes, onChange }) => {
         </Alert>
       )}
 
-      <CodeMirror
+      {/* <CodeMirror
         value={jsonRes}
         height='500px'
         extensions={[json()]}
@@ -52,7 +55,7 @@ const NewJsonEditor: FC<Props> = ({ jsonRes, onChange }) => {
         basicSetup={{ lineNumbers: true, foldGutter: true }}
         className='json-editor'
         autoFocus
-      />
+      /> */}
     </>
   )
 }

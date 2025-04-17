@@ -2,8 +2,9 @@ import { NextApiRequest, NextApiResponse } from 'next/types'
 import jwt from 'jsonwebtoken'
 import sql, { ConnectionPool, Request, Int } from 'mssql'
 import { dbConfig } from 'src/configs/db'
+import { withAuth } from '../../middleware/authMiddleware'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { entries } = req.query
 
   const pool: ConnectionPool = await sql.connect(dbConfig)
@@ -12,8 +13,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const payload = (await jwt.decode(req.cookies.accessToken as string)) as { email: string; id: number }
 
   request.input('user_id', Int, payload.id)
-
-  // const query = `SELECT * FROM user_watchlist WHERE user_id = @user_id`
 
   const query = `SELECT
       w.*,
@@ -48,7 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           GROUP BY
               bt.watchlist_id
       ) t ON w.id = t.watchlist_id
-       
+
 LEFT JOIN
       (
           SELECT
@@ -59,7 +58,7 @@ LEFT JOIN
           GROUP BY
               gbt.watchlist_id
       ) btg ON w.id = btg.watchlist_id
-  
+
   LEFT JOIN
   (
     SELECT
@@ -96,7 +95,7 @@ LEFT JOIN
               wi.watchlist_id,
             JSON_QUERY('[' + STRING_AGG(CONCAT('{"code": ', '"', wi.code, '", ', '"label": "', REPLACE(wi.label, '"', ''), '"}'), ',') + ']') as ibc_insurance
           FROM
-              watchlist_ibc_insurance wi 
+              watchlist_ibc_insurance wi
           GROUP BY
               wi.watchlist_id
       ) i ON w.id = i.watchlist_id
@@ -107,9 +106,9 @@ LEFT JOIN
           isic.watchlist_id,
         JSON_QUERY('[' + STRING_AGG(CONCAT('{"code": ', '"', isic.code, '", ', '"label": "', REPLACE(isic.label, '"', ''), '"}'), ',') + ']') as isic_v4
       FROM
-          watchlist_isic_v4 isic 
+          watchlist_isic_v4 isic
       GROUP BY
-          isic.watchlist_id 
+          isic.watchlist_id
   ) iv4 ON w.id = iv4.watchlist_id
 
   LEFT JOIN
@@ -118,7 +117,7 @@ LEFT JOIN
           loc.watchlist_id,
         JSON_QUERY('[' + STRING_AGG(CONCAT('{"country_code": ', '"', loc.country_code, '", ', '"country": "', loc.country, '", ', '"region": "', loc.region, '", ', '"city": "', loc.city, '", ', '"street": "', loc.street, '", ', '"street_number": "', loc.street_number, '", ', '"latitude": "', loc.latitude, '", ', '"longitude": "', loc.longitude, '"}'), ',') + ']') as locations
       FROM
-          watchlist_locations loc 
+          watchlist_locations loc
       GROUP BY
           loc.watchlist_id
   ) l ON w.id = l.watchlist_id
@@ -129,7 +128,7 @@ LEFT JOIN
           nace.watchlist_id,
         JSON_QUERY('[' + STRING_AGG(CONCAT('{"code": ', '"', nace.code, '", ', '"label": "', REPLACE(nace.label, '"', ''), '"}'), ',') + ']') as nace_rev2
       FROM
-          watchlist_nace_rev2 nace 
+          watchlist_nace_rev2 nace
       GROUP BY
           nace.watchlist_id
   ) rev2 ON w.id = rev2.watchlist_id
@@ -140,7 +139,7 @@ LEFT JOIN
           naic.watchlist_id,
         JSON_QUERY('[' + STRING_AGG(CONCAT('{"code": ', '"', naic.code, '", ', '"label": "', REPLACE(naic.label, '"', ''), '"}'), ',') + ']') as naics_2022_secondary
       FROM
-          watchlist_naics_2022_secondary naic 
+          watchlist_naics_2022_secondary naic
       GROUP BY
           naic.watchlist_id
   ) naics ON w.id = naics.watchlist_id
@@ -171,12 +170,12 @@ LEFT JOIN
           si.watchlist_id,
         JSON_QUERY('[' + STRING_AGG(CONCAT('{"code": ', '"', si.code, '", ', '"label": "', REPLACE(si.label, '"', ''), '"}'), ',') + ']') as sic
       FROM
-          watchlist_sic si 
+          watchlist_sic si
       GROUP BY
           si.watchlist_id
   ) sics ON w.id = sics.watchlist_id
 
-  
+
 LEFT JOIN
   (
     SELECT
@@ -236,23 +235,23 @@ LEFT JOIN
   (
       SELECT
           details.watchlist_id,
-        JSON_QUERY('[' + STRING_AGG(CONCAT('{"attribute_name": ', '"', details.attribute_name, '", ', 
+        JSON_QUERY('[' + STRING_AGG(CONCAT('{"attribute_name": ', '"', details.attribute_name, '", ',
         '"attribute_confidence_score": "', details.attribute_confidence_score, '", ',
-        '"attribute_match_type": "', details.attribute_match_type, '", ', 
-        '"attribute_match_source": "', details.attribute_match_source, '", ', 
-        '"attribute_match_element": "', details.attribute_match_element, '", ', 
-        '"attribute_value": "', details.attribute_value, '", ', 
-        '"attribute_value_country_code": "', details.attribute_value_country_code, '", ', 
-        '"attribute_value_country": "', details.attribute_value_country, '", ', 
-        '"attribute_value_region": "', details.attribute_value_region, '", ', 
-        '"attribute_value_city": "', details.attribute_value_city, '", ', 
-        '"attribute_value_postcode": "', details.attribute_value_postcode, '", ', 
-        '"attribute_value_street": "', details.attribute_value_street, '", ', 
-        '"attribute_value_street_number": "', details.attribute_value_street_number, '", ', 
-        '"attribute_value_latitude": "', details.attribute_value_latitude, '", ', 
+        '"attribute_match_type": "', details.attribute_match_type, '", ',
+        '"attribute_match_source": "', details.attribute_match_source, '", ',
+        '"attribute_match_element": "', details.attribute_match_element, '", ',
+        '"attribute_value": "', details.attribute_value, '", ',
+        '"attribute_value_country_code": "', details.attribute_value_country_code, '", ',
+        '"attribute_value_country": "', details.attribute_value_country, '", ',
+        '"attribute_value_region": "', details.attribute_value_region, '", ',
+        '"attribute_value_city": "', details.attribute_value_city, '", ',
+        '"attribute_value_postcode": "', details.attribute_value_postcode, '", ',
+        '"attribute_value_street": "', details.attribute_value_street, '", ',
+        '"attribute_value_street_number": "', details.attribute_value_street_number, '", ',
+        '"attribute_value_latitude": "', details.attribute_value_latitude, '", ',
         '"attribute_value_longitude": "', details.attribute_value_longitude, '"}'), ',') + ']') as match_details
       FROM
-          watchlist_match_details details 
+          watchlist_match_details details
       GROUP BY
           details.watchlist_id
   ) md ON w.id = md.watchlist_id
@@ -344,3 +343,5 @@ LEFT JOIN
 
   res.status(200).json(data_from_db)
 }
+
+export default withAuth(handler)

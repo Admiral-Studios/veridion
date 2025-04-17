@@ -65,9 +65,9 @@ const Banner = () => {
         <Box sx={{ width: '100%', height: '600px' }}>
           <iframe
             data-version='2'
-            src='https://app.supademo.com/showcase/embed/cm3lxlbds0dx3qdk92thl53o1?embed_v=2'
+            src='https://app.supademo.com/demo/cm70jnjft03qmsv0i5lb8pi5u'
             loading='lazy'
-            title='Veridion: Supplier Discovery App'
+            title='Veridion: Scout PRO'
             allow='clipboard-write'
             allowFullScreen
             style={{

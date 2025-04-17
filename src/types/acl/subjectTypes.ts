@@ -34,7 +34,7 @@ export enum SubjectTypes {
   DashboardProductsAndServices = 'dashboard-products_and_services',
   DashboardESG = 'dashboard-esg',
   DashboardProductsAndServicesPage = 'dashboard-products_and_services-page',
-  MarketIntelligencePage = 'market-intelligence-page',
+  KeywordsSearchPagePage = 'keywords-search-page',
   DashboardESGPage = 'dashboard-esg_report-page',
   DashboardESGScoreByPillar = 'dashboard-esg_score_by_pillar',
   DashboardESGScoreByPillarPage = 'dashboard-esg_score_by_pillar-page',
@@ -47,5 +47,9 @@ export enum SubjectTypes {
   DashboardESGEmissionsAndTargets = 'dashboard-esg_emissions_and_targets',
   DashboardESGEmissionsAndTargetsPage = 'dashboard-esg_emissions_and_targets-page',
   DashboardESGScoreComparison = 'dashboard-esg_score_comparison',
-  DashboardESGScoreComparisonPage = 'dashboard-esg_score_comparison-page'
+  DashboardESGScoreComparisonPage = 'dashboard-esg_score_comparison-page',
+  DashboardESGNews = 'dashboard-esg_news',
+  DashboardESGNewsPage = 'dashboard-esg_news-page',
+  VeridionServices = 'veridion_services',
+  VeridionData = 'veridion_data'
 }

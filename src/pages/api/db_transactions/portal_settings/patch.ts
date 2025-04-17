@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next/types'
+import { withAuth } from '../../middleware/authMiddleware'
 import ExecuteQuery from 'src/utils/db'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method === 'PATCH') {
       const { value, setting } = req.body as {
@@ -11,9 +12,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const formattedDate = new Date(value).toISOString().replace('T', ' ').replace('Z', '')
 
-      const query = `UPDATE portal_settings SET value = '${formattedDate}', updated_at = '${formattedDate}' WHERE setting = '${setting}';`
+      const query = `
+        UPDATE portal_settings
+        SET value = @formattedDate, updated_at = @formattedDate
+        WHERE setting = @setting;
+      `
 
-      await ExecuteQuery(query)
+      await ExecuteQuery(query, {
+        formattedDate: formattedDate,
+        setting: setting
+      })
 
       res.status(200).json(req.body)
     } else {
@@ -23,3 +31,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(401).json(error)
   }
 }
+
+export default withAuth(handler)

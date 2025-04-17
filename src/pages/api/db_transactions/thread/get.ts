@@ -1,14 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next/types'
+import { withAuth } from '../../middleware/authMiddleware'
 import ExecuteQuery from 'src/utils/db'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { user_id } = req.body as { user_id: number }
 
     const fetchQuery = `
-      SELECT tr.*, m.messages 
+      SELECT tr.*, m.messages
       FROM user_ai_threads tr
-    
       LEFT JOIN
         (
             SELECT
@@ -19,9 +19,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             GROUP BY
                 tm.thread_id
         ) m ON tr.id = m.thread_id
-    
-        WHERE tr.user_id = '${user_id}' ORDER BY created_at DESC;`
-    const [result] = await ExecuteQuery(fetchQuery)
+      WHERE tr.user_id = @userId
+      ORDER BY created_at DESC;
+    `
+
+    const [result] = await ExecuteQuery(fetchQuery, {
+      userId: user_id
+    })
 
     const formattedResult = result.map((obj: any) => ({
       ...obj,
@@ -33,3 +37,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(403).json({ message: 'Failed to fetch thread' })
   }
 }
+
+export default withAuth(handler)

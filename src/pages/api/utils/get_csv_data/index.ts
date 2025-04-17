@@ -1,10 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next/types'
 import fs from 'fs'
-
-// import path from 'path'
 import csvParser from 'csv-parser'
+import { withAuth } from '../../middleware/authMiddleware'
 
-export default async function handler(request: NextApiRequest, response: NextApiResponse) {
+async function handler(request: NextApiRequest, response: NextApiResponse) {
   const filePath = request.query.filePath as string
 
   const results: any = []
@@ -16,3 +15,5 @@ export default async function handler(request: NextApiRequest, response: NextApi
       return response.status(200).json(results)
     })
 }
+
+export default withAuth(handler)

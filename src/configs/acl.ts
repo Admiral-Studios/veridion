@@ -31,8 +31,6 @@ const visitorAbilities = [
   SubjectTypes.EnrichCompaniesPage,
   SubjectTypes.CompanyDetails,
   SubjectTypes.CompanyDetailsPage,
-  SubjectTypes.CompanyAnalytics,
-  SubjectTypes.CompanyAnalyticsPage,
   SubjectTypes.SearchPage,
   SubjectTypes.SavedProducts,
   SubjectTypes.SavedProductsPage,
@@ -40,7 +38,25 @@ const visitorAbilities = [
   SubjectTypes.SupplierDiscovery,
   SubjectTypes.HomePage,
   SubjectTypes.VeridionInExcel,
-  SubjectTypes.FullSearchPage
+  SubjectTypes.FullSearchPage,
+  SubjectTypes.VeridionServices,
+  SubjectTypes.VeridionData
+
+  // Uncomment after approve
+  // SubjectTypes.DashboardESG,
+  // SubjectTypes.DashboardESGPage,
+  // SubjectTypes.DashboardESGScoreByPillar,
+  // SubjectTypes.DashboardESGCompaniesCompared,
+  // SubjectTypes.DashboardESGCompaniesComparedPage,
+  // SubjectTypes.DashboardESGScoreByPillarPage,
+  // SubjectTypes.DashboardESGScoreByRiskCriteria,
+  // SubjectTypes.DashboardESGScoreByRiskCriteriaPage,
+  // SubjectTypes.DashboardESGEmissionsAndTargets,
+  // SubjectTypes.DashboardESGEmissionsAndTargetsPage,
+  // SubjectTypes.DashboardESGScoreComparison,
+  // SubjectTypes.DashboardESGScoreComparisonPage,
+  // SubjectTypes.DashboardESGNews,
+  // SubjectTypes.DashboardESGNewsPage
 ]
 
 const memberAbilities = [
@@ -59,8 +75,6 @@ const memberAbilities = [
   SubjectTypes.ProfilePage,
   SubjectTypes.CompanyDetailsPage,
   SubjectTypes.CompanyDetails,
-  SubjectTypes.CompanyAnalyticsPage,
-  SubjectTypes.CompanyAnalytics,
   SubjectTypes.SearchPage,
   SubjectTypes.SavedProducts,
   SubjectTypes.SavedProductsPage,
@@ -68,9 +82,25 @@ const memberAbilities = [
   SubjectTypes.CompanySearchPage,
   SubjectTypes.SupplierDiscovery,
   SubjectTypes.HomePage,
-  SubjectTypes.MarketIntelligencePage,
-  SubjectTypes.VeridionInExcel,
-  SubjectTypes.FullSearchPage
+  SubjectTypes.FullSearchPage,
+  SubjectTypes.VeridionServices,
+  SubjectTypes.VeridionData
+
+  // Uncomment after approve
+  // SubjectTypes.DashboardESG,
+  // SubjectTypes.DashboardESGPage,
+  // SubjectTypes.DashboardESGScoreByPillar,
+  // SubjectTypes.DashboardESGCompaniesCompared,
+  // SubjectTypes.DashboardESGCompaniesComparedPage,
+  // SubjectTypes.DashboardESGScoreByPillarPage,
+  // SubjectTypes.DashboardESGScoreByRiskCriteria,
+  // SubjectTypes.DashboardESGScoreByRiskCriteriaPage,
+  // SubjectTypes.DashboardESGEmissionsAndTargets,
+  // SubjectTypes.DashboardESGEmissionsAndTargetsPage,
+  // SubjectTypes.DashboardESGScoreComparison,
+  // SubjectTypes.DashboardESGScoreComparisonPage,
+  // SubjectTypes.DashboardESGNews,
+  // SubjectTypes.DashboardESGNewsPage
 ]
 
 const veridionerAbilities = [
@@ -93,8 +123,6 @@ const veridionerAbilities = [
   SubjectTypes.ProfilePage,
   SubjectTypes.CompanyDetailsPage,
   SubjectTypes.CompanyDetails,
-  SubjectTypes.CompanyAnalyticsPage,
-  SubjectTypes.CompanyAnalytics,
   SubjectTypes.SearchPage,
   SubjectTypes.DashboardDetailedFillRates,
   SubjectTypes.SavedProducts,
@@ -108,26 +136,30 @@ const veridionerAbilities = [
   SubjectTypes.CompanySearchPage,
   SubjectTypes.SupplierDiscovery,
   SubjectTypes.HomePage,
-  SubjectTypes.DashboardESGPage,
   SubjectTypes.DashboardProductsAndServicesPage,
-  SubjectTypes.MarketIntelligencePage,
-  SubjectTypes.VeridionInExcel,
   SubjectTypes.FullSearchPage,
   SubjectTypes.HomePage,
-  SubjectTypes.DashboardESGPage,
   SubjectTypes.DashboardProductsAndServicesPage,
-  SubjectTypes.DashboardESGCompaniesCompared,
-  SubjectTypes.DashboardESGCompaniesComparedPage,
-  SubjectTypes.DashboardESGScoreByPillar,
-  SubjectTypes.DashboardESGScoreByPillarPage,
+
+  // Uncomment after approve
+  // SubjectTypes.DashboardESGCompaniesCompared,
+  // SubjectTypes.DashboardESGCompaniesComparedPage,
+  // SubjectTypes.DashboardESGScoreByPillar,
+  // SubjectTypes.DashboardESGScoreByPillarPage,
   SubjectTypes.DashboardCommitmentsNews,
   SubjectTypes.DashboardCommitmentsNewsPage,
-  SubjectTypes.DashboardESGScoreByRiskCriteria,
-  SubjectTypes.DashboardESGScoreByRiskCriteriaPage,
-  SubjectTypes.DashboardESGEmissionsAndTargets,
-  SubjectTypes.DashboardESGEmissionsAndTargetsPage,
-  SubjectTypes.DashboardESGScoreComparison,
-  SubjectTypes.DashboardESGScoreComparisonPage
+
+  // Uncomment after approve
+  // SubjectTypes.DashboardESGScoreByRiskCriteria,
+  // SubjectTypes.DashboardESGScoreByRiskCriteriaPage,
+  // SubjectTypes.DashboardESGEmissionsAndTargets,
+  // SubjectTypes.DashboardESGEmissionsAndTargetsPage,
+  // SubjectTypes.DashboardESGScoreComparison,
+  // SubjectTypes.DashboardESGScoreComparisonPage,
+  // SubjectTypes.DashboardESGNews,
+  // SubjectTypes.DashboardESGNewsPage,
+  SubjectTypes.VeridionServices,
+  SubjectTypes.VeridionData
 ]
 
 const dpwadamAbilities = [
@@ -147,7 +179,7 @@ const dpwadamAbilities = [
   SubjectTypes.DataMarketplacePage,
   SubjectTypes.SupplierDiscovery,
   SubjectTypes.HomePage,
-  SubjectTypes.VeridionInExcel
+  SubjectTypes.VeridionData
 ]
 
 const defineRulesFor = (role: string, subject: string) => {

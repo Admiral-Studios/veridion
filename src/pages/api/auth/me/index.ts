@@ -25,9 +25,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     id = decoded.id
   })
 
-  const query = `SELECT TOP 1 u.*, r.role FROM users u JOIN roles r ON u.role_id = r.id WHERE u.id='${id}'`
+  const query = `SELECT TOP 1 u.*, r.role FROM users u JOIN roles r ON u.role_id = r.id WHERE u.id=@userId`
 
-  const findUser = await ExecuteQuery(query)
+  const findUser = await ExecuteQuery(query, { userId: id })
 
   if (!findUser[0].length) {
     return res.status(404).json({ message: 'Invalid email or password' })

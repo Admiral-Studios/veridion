@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next/types'
-import sql, { ConnectionPool, Request } from 'mssql'
-import { dbConfig } from 'src/configs/db'
+import { withAuth } from '../../middleware/authMiddleware'
+import ExecuteQuery from 'src/utils/db'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { subject, user_id, json_query, messages } = req.body as {
       subject: string
@@ -11,28 +11,42 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       messages: string[]
     }
 
-    const pool: ConnectionPool = await sql.connect(dbConfig)
-    const request: Request = pool.request()
+    const insertQuery = `
+      INSERT INTO user_ai_threads (subject, user_id, json_query)
+      VALUES (@subject, @userId, @json_query);
+      SELECT SCOPE_IDENTITY() AS id;
+    `
 
-    request.input('json_query', sql.NVarChar, json_query)
-    request.input('subject', sql.NVarChar, subject)
+    const params = {
+      subject: subject,
+      userId: user_id,
+      json_query: json_query
+    }
 
-    const insertQuery = `INSERT INTO user_ai_threads (subject, user_id, json_query) VALUES (@subject, '${user_id}', @json_query); SELECT SCOPE_IDENTITY() AS id;`
-
-    const { recordset } = await request.query(insertQuery)
+    const [result] = await ExecuteQuery(insertQuery, params)
 
     const insertMessagesQuery = messages
       .map((message, id) => {
-        request.input(`message_${id}`, sql.NVarChar, message)
-
-        return `INSERT INTO ai_thread_messages (thread_id, message) VALUES ('${recordset[0].id}', @message_${id});`
+        return `
+          INSERT INTO ai_thread_messages (thread_id, message)
+          VALUES (@threadId, @message_${id});
+        `
       })
       .join('')
 
-    await request.query(insertMessagesQuery)
+    const messageParams = messages.reduce<Record<string, string | number>>((acc, message, id) => {
+      acc[`message_${id}`] = message
+      acc['threadId'] = result.id
 
-    res.status(200).json({ id: recordset[0].id })
+      return acc
+    }, {})
+
+    await ExecuteQuery(insertMessagesQuery, messageParams)
+
+    res.status(200).json({ id: result.id })
   } catch (error) {
     res.status(403).json({ message: 'Failed to add thread' })
   }
 }
+
+export default withAuth(handler)

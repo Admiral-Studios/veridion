@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next/types'
 
-export default async function handler(request: NextApiRequest, response: NextApiResponse) {
+async function handler(request: NextApiRequest, response: NextApiResponse) {
   const client_id = process.env.NEXT_PUBLIC_POWER_BI_API_CLIENT_ID || ''
   const client_secret = process.env.NEXT_PUBLIC_POWER_BI_API_CLIENT_SECRET || ''
   const formData = new FormData()
@@ -24,3 +24,5 @@ export default async function handler(request: NextApiRequest, response: NextApi
 
   return response.status(200).json(res)
 }
+
+export default handler
