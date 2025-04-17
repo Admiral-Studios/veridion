@@ -25,12 +25,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const userResult = await ExecuteQuery(getUserQuery, { id })
     const [user] = userResult
 
-    if (role_id > 50) {
-      user.has_full_access_to_explore = true
-      await createUpdateUserInHubspot(user)
+    if ([1, 2, 3].includes(role_id)) {
+      await createUpdateUserInHubspot({ ...user, has_full_access_to_explore: true })
     } else {
-      user.has_full_access_to_explore = false
-      await createUpdateUserInHubspot(user)
+      await createUpdateUserInHubspot({ ...user, has_full_access_to_explore: false })
     }
 
     res.status(200).json(req.body)

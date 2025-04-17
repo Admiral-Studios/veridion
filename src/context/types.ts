@@ -22,7 +22,6 @@ export type UserDataType = {
   max_product_limit: number
   industry: string
   requested_elevanted_access: boolean
-  has_full_access_to_explore?: boolean
 }
 
 export type AuthValuesType = {
