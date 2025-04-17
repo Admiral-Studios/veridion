@@ -9,6 +9,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const { id } = req.body
 
       if (id) {
+        const getUserQuery = `SELECT * FROM users WHERE id = @id`
+        const userResult = await ExecuteQuery(getUserQuery, { id })
+        const [user] = userResult
+
+        await createUpdateUserInHubspot({ ...user, has_full_access_to_explore: false })
+
         const deleteUserQuery = `
           DELETE FROM users WHERE id = @id;
           DELETE FROM user_watchlist WHERE user_id = @id;
@@ -16,13 +22,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         `
 
         await ExecuteQuery(deleteUserQuery, { id })
-
-        const getUserQuery = `SELECT * FROM users WHERE id = @id`
-        const userResult = await ExecuteQuery(getUserQuery, { id })
-        const [user] = userResult
-        user.has_full_access_to_explore = false
-
-        await createUpdateUserInHubspot(user)
 
         res.status(200).json({ id })
       }
